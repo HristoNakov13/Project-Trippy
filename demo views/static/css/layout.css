@@ -1,0 +1,19 @@
+.layout {
+    display: flex;
+    width: 100%;
+}
+
+.site-header {
+    width: 100%;
+}
+
+.site-body {
+    flex: 1 0 60%;
+    padding: 1em;
+    max-width: 1284px;
+    margin: 0 auto;
+}
+
+.site-footer {
+    width: 100%;
+}

@@ -1,5 +1,9 @@
 .navbar {
-    font-family: 'Fira Sans Condensed', Arial, sans-serif; 
+    font-family: 'Fira Sans Condensed', Helvetica, Arial, sans-serif; 
+}
+
+.navbar-bg-dark {
+    background-color: #181520;
 }
 
 .navbar-brand .logo-icon{

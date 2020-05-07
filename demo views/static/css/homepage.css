@@ -1,0 +1,60 @@
+.header-background {
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    height: 65vh;
+    width: 100%;
+    font-family: 'Fira Sans Condensed', Helvetica, Arial, sans-serif; 
+}
+
+.header-background:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(ellipse closest-side, rgba(15, 14, 22, 0.5), #181520), url("../images/header-background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.header-background img {
+    width: 100%;
+    height: 100%;
+}
+
+.subheader {
+    position: relative;
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 100;
+    padding: 1em;
+}
+
+.page-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 0 35%;
+}
+
+.page-intro p {
+    padding: 1em;
+    /* border: 3px solid #CCC; */
+    background-color: #302b3d;;
+    border-radius: 1em;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 65%;
+}
+
+.features ul {
+    list-style: none;
+}
