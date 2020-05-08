@@ -1,0 +1,61 @@
+.header-background {
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    height: 75vh;
+    width: 100%;
+    font-family: 'Fira Sans Condensed', Helvetica, Arial, sans-serif; 
+}
+
+.header-background:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(ellipse closest-side, rgba(15, 14, 22, 0.5), #181520), url("../../static/images/header-background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.header-background h1 {
+    font-size: 2em;
+}
+
+.header-background img {
+    width: 100%;
+    height: 100%;
+}
+
+.subheader {
+    position: relative;
+    z-index: 100;
+    padding: 1em;
+}
+
+.page-intro p {
+    padding: 1em;
+    background-color: #302b3d;;
+    border-radius: 1em;
+}
+
+.features {
+    list-style: none;
+}
+
+.features li {
+    margin-bottom: 0.4em;
+}
+
+.features .feature-icon {
+    height: 2em;
+    width: 2em;
+    margin-right: 0.5em;
+}
+
+.features-title {
+    font-size: 1.2em;
+    font-style: italic;
+    text-align: center;
+}

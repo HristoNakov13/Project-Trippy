@@ -1,0 +1,64 @@
+.navbar {
+    font-family: 'Fira Sans Condensed', Helvetica, Arial, sans-serif;
+    /* border-bottom: 2px solid #CCC;  */
+}
+
+.navbar-bg-dark {
+    background-color: #181520;
+}
+
+.navbar-brand .logo-icon {
+    height: 1.5em;
+    width: 1.5em;
+    margin-right: 0.3em;
+}
+
+.navbar-brand .brand-name {
+    font-size: 28px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.dropdown-item:hover {
+    background: orange;
+    color: #FFF;
+}
+
+.auth {
+    border: 1.5px solid #CCC;
+    border-radius: 0.3em;
+    display: block;
+    padding: 0.3em;
+    margin-left: 0.5em;
+    margin-bottom: 0.5em;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.auth.sign-up {
+    color: rgb(245, 150, 9) !important;
+}
+
+.auth.sign-up:hover {
+    color: #FFF !important;
+    background-color: orange;
+    border-color: orange;
+}
+
+.auth.login {
+    color: #FFF !important;
+}
+
+.auth.login:hover {
+    color: #CCC !important;
+    border-color: orange;
+}
+
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-menu {
+    background-color: #CCC;
+}

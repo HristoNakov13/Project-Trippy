@@ -1,0 +1,22 @@
+@media ( max-width: 1000px ) {
+    .header-background {
+        height: 100vh;
+        font-size: 16px;
+    }
+}
+
+.viewport {
+    min-height: 100vh;
+    background-color: #181520;
+    color: #FFF;
+}
+
+.anchor {
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: orange;
+}
+
+.anchor:hover {
+    color: wheat;
+}

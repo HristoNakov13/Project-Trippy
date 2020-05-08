@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@700&display=swap');
+
+html {
+    font-size: 20px;
+    line-height: 1.5;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+body, button, option, input, select{
+    font: inherit;
+}
+
+.site-header .logo {
+    font-family: 'Fira Sans Condensed', Helvetica, Arial, sans-serif;
+    font-size: 38px;
+}
