@@ -31,7 +31,7 @@ const Navigation: React.FC = () => {
                         </Nav>
                         <Nav className="nav navbar-nav ml-auto w-100 justify-content-end">
                             <Link to="/" className="nav-link auth login">Log In</Link>
-                            <Link to="/" className="nav-link auth sign-up">Sign Up</Link>
+                            <Link to="/sign-up" className="nav-link auth sign-up">Sign Up</Link>
                             <NavDropdown alignRight title="MyAccount123" id="account-controll-drpdown">
                                 <NavDropdown.Item as={Link} to="/">lkjkj</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

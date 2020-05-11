@@ -15,7 +15,7 @@ const Home: React.FC = () => {
                     guiding
                     you every step of the way. Join others on their destination or create your own.
                     </p>
-                    <a className="anchor underline" href="/">Sign Up</a>
+                    <a className="anchor underline" href="/sign-up">Sign Up</a>
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-4">
