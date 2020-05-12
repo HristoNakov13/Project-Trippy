@@ -24,9 +24,9 @@ const Home: React.FC = () => {
                                 <div className="features-title">With Trippy you can travel by</div>
                             </div>
                             <ul className="features">
-                                <li><img className="feature-icon" src={join} />Joining others</li>
-                                <li><img className="feature-icon" src={advertise} />Advertising your own journey</li>
-                                <li><img className="feature-icon" src={friends} />Everything together with friends</li>
+                                <li><img className="feature-icon" src={join} alt="join available trips" />Joining others</li>
+                                <li><img className="feature-icon" src={advertise} alt="advertise your trip" />Advertising your own journey</li>
+                                <li><img className="feature-icon" src={friends} alt="cooperate wtih friends" />Everything together with friends</li>
                             </ul>
                             <a className="btn btn-info" href="/">Learn more</a>
                         </div>

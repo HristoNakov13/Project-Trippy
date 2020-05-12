@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+form {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.invalid-feedback {
+    font-style: italic;
+}
+
+.auth-help {
+    display: block;
+    text-decoration: none !important;
+    color: rgba(0, 174, 255, 0.8);
+}
+
+.auth-help:first-of-type {
+    margin-top: 2.5em;
+}
+
+.auth-help:hover {
+    color: #FFF;
+}
