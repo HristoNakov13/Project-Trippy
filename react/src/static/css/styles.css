@@ -13,12 +13,12 @@
 
 .anchor {
     text-transform: uppercase;
-    text-decoration: underline;
-    color: orange;
+    text-decoration: none;
 }
 
 .anchor:hover {
-    color: wheat;
+    color: #FFF;
+    transition: color 0.2s ease-in-out;
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -9,15 +9,17 @@ form {
 }
 
 .auth-help {
-    display: block;
-    text-decoration: none !important;
-    color: rgba(0, 174, 255, 0.8);
-}
-
-.auth-help:first-of-type {
+    display: flex;
+    flex-direction: column;
     margin-top: 2.5em;
 }
 
-.auth-help:hover {
+.auth-help a {
+    text-decoration: none !important;
+    color: rgba(0, 174, 255, 0.8);
+    text-transform: none;
+}
+
+.auth-help a:hover {
     color: #FFF;
 }

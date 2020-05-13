@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import "./Navigation.css";
+import "./Header.css";
 
 import { NavDropdown, Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import logo from "../../static/images/brand-logo.svg";
+import logo from "../../static/images/test-logo.png";
 
 const Navigation: React.FC = () => {
     return (

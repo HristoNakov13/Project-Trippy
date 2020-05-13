@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import Navigation from "./components/Navigation/Navigation";
+import Header from "./components/Navigation/Header";
+import Footer from "./components/Navigation/Footer";
 import Home from "./components/Home/Home";
 import Main from "./components/Main/Main";
 import SignUp from "./components/auth/SignUp/SignUp";
@@ -13,7 +14,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className="viewport">
-                <Navigation />
+                <Header />
                 <Main>
                     <Switch>
                         <Route exact path="/" component={Home} />
@@ -22,6 +23,7 @@ function App() {
                         <Route exact path="/account-recovery" component={Recovery} />
                     </Switch>
                 </Main>
+                <Footer />
             </div>
         </BrowserRouter>
     );

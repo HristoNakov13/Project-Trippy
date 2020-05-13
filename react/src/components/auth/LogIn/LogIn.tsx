@@ -3,7 +3,7 @@ import "../Auth.css";
 
 import { Formik, Field } from "formik";
 import { Link } from "react-router-dom";
-import { Form, Button, Col, FormGroup } from "react-bootstrap";
+import { Form, Button, Col, FormGroup, Row } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 
 
@@ -67,13 +67,15 @@ const LogIn: React.FC = () => {
                             <Col className="text-center">
                                 <Button type="submit" variant="warning"><i className="fas fa-sign-in-alt" /> Log In</Button>
                             </Col>
-                            <Link className="auth-help" to="/sign-up">
+                        </Form>
+                        <div className="auth-help">
+                            <Link className="anchor" to="/sign-up">
                                 Create account
                             </Link>
-                            <Link className="auth-help" to="/account-recovery">
+                            <Link className="anchor" to="/account-recovery">
                                 Trouble logging in?
                             </Link>
-                        </Form>
+                        </div>
                     </Fragment>
                 )}
         </Formik>

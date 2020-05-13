@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import "../Auth.css";
 
 import { Formik, Field } from "formik";
-import { Form, InputGroup, Button, Col } from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Form, InputGroup, Button, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import schema from "./validation-schema";
 
@@ -113,9 +113,11 @@ const SignUp: React.FC = () => {
                                 <Button type="submit" variant="warning">Sign Up</Button>
                             </Col>
                         </Form>
-                        <Link className="auth-help" to="/login">
-                            Have an acoount? Log in
-                        </Link>
+                        <div className="auth-help">
+                            <Link to="/login">
+                                Have an acoount? Log in
+                            </Link>
+                        </div>
                     </Fragment>
                 )}
         </Formik>

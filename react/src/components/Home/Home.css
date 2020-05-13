@@ -12,6 +12,8 @@
     position: absolute;
     top: 0;
     left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse closest-side, rgba(15, 14, 22, 0.5), #181520), url("../../static/images/header-background.jpg");
@@ -55,7 +57,18 @@
 }
 
 .features-title {
+    width: 100%;
     font-size: 1.2em;
     font-style: italic;
     text-align: center;
+}
+
+.anchor.sign-up {
+    color: orange;
+    text-decoration: underline;
+}
+
+.anchor.learn-more {
+    color: #17a2b8;
+    text-decoration: underline;
 }
