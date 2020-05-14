@@ -29,10 +29,8 @@ const SignUp: React.FC = () => {
                 errors,
             }) => (
                     <Fragment>
-                        <Col className="text-center">
-                            <h3>Register</h3>
-                        </Col>
                         <Form noValidate onSubmit={handleSubmit}>
+                            <h1 className="form-title">Register</h1>
                             <Form.Group controlId="email">
                                 <Form.Label>Email*</Form.Label>
                                 <InputGroup>

@@ -25,10 +25,8 @@ const LogIn: React.FC = () => {
                 errors,
             }) => (
                     <Fragment>
-                        <Col className="text-center">
-                            <h3>Log In</h3>
-                        </Col>
                         <Form onSubmit={handleSubmit}>
+                            <h1 className="form-title">Log In</h1>
                             <Form.Group controlId="email-username">
                                 <InputGroup>
                                     <InputGroup.Prepend>

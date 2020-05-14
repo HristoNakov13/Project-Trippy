@@ -33,7 +33,7 @@ const Navigation: React.FC = () => {
                             <Link to="/sign-up" className="nav-link auth sign-up">Sign Up</Link>
                             <NavDropdown alignRight title="MyAccount123" id="account-controll-drpdown">
                                 <NavDropdown.Item as={Link} to="/user/my-trips"><i className="fas fa-map-marked-alt" /> My Trips</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/"><i className="fas fa-car" /> My Cars</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/user/my-cars"><i className="fas fa-car" /> My Cars</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/user/settings"><i className="fas fa-cog" /> Settings</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item as={Link} to="/logout"><i className="fas fa-sign-out-alt" /> Logout</NavDropdown.Item>

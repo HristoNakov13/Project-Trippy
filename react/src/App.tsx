@@ -9,6 +9,7 @@ import Main from "./components/Main/Main";
 import SignUp from "./components/auth/SignUp/SignUp";
 import LogIn from "./components/auth/LogIn/LogIn";
 import Recovery from "./components/auth/Recovery/Recovery";
+import CreateCar from "./components/user/cars/CreateCar/CreateCar";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                         <Route exact path="/sign-up" component={SignUp} />
                         <Route exact path="/login" component={LogIn} />
                         <Route exact path="/account-recovery" component={Recovery} />
+                        <Route exact path="/user/cars/create-car" component={CreateCar} />
                     </Switch>
                 </Main>
                 <Footer />
