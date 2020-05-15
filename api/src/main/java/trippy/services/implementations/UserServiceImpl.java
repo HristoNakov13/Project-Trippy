@@ -27,12 +27,15 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
     }
 
+
     @Override
-    public void register(UserServiceModel user) {
-
-
+    public void signUp(UserServiceModel user) {
+        //TODO
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public UserServiceModel getUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findByUsername(username)
@@ -41,9 +44,23 @@ public class UserServiceImpl implements UserService {
         return this.modelMapper.map(user, UserServiceModel.class);
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public boolean isTakenUsername(String username) {
         User user = this.userRepository.findByUsername(username)
+                .orElse(null);
+
+        return user != null;
+    }
+
+    /**
+     *{@inheritDoc}
+     */
+    @Override
+    public boolean isTakenEmail(String email) {
+        User user = this.userRepository.findByEmail(email)
                 .orElse(null);
 
         return user != null;
@@ -55,21 +72,32 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
+    /**
+     * If a user is first to register he is assigned every possible role
+     * including ROOT_ADMIN. Otherwise only USER role.
+     *
+     * @return {@link Set} collection of {@link UserRole}.
+     */
     private Set<UserRole> getAssignedRoles() {
         Set<UserRole> roles = new HashSet<>();
 
         if (this.isFirstToRegister()) {
-            roles.add(this.userRoleRepository.findByName("ROOT_ADMIN"));
-            roles.add(this.userRoleRepository.findByName("ADMIN"));
-            roles.add(this.userRoleRepository.findByName("MODERATOR"));
-            roles.add(this.userRoleRepository.findByName("USER"));
+            roles.add(this.userRoleRepository.findByName("ROLE_ROOT_ADMIN"));
+            roles.add(this.userRoleRepository.findByName("ROLE_ADMIN"));
+            roles.add(this.userRoleRepository.findByName("ROLE_MODERATOR"));
+            roles.add(this.userRoleRepository.findByName("ROLE_USER"));
         } else {
-            roles.add(this.userRoleRepository.findByName("USER"));
+            roles.add(this.userRoleRepository.findByName("ROLE_USER"));
         }
 
         return roles;
     }
 
+    /**
+     * Checks if the database contains any {@link User}
+     *
+     * @return {@code boolean}
+     */
     private boolean isFirstToRegister() {
         return this.userRepository.count() == 0;
     }

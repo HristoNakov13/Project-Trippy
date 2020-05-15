@@ -11,6 +11,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private String username;
     private String password;
+    private String email;
     private boolean isEnabled;
     private Set<UserRole> roles;
 
@@ -83,5 +84,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+    }
+
+    @Column(name = "email", nullable = false, unique = true)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

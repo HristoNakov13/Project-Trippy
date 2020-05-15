@@ -2,16 +2,21 @@ import React, { Fragment } from "react";
 import "../Auth.css";
 
 import { Formik, Field } from "formik";
-import { Form, InputGroup, Button, Col, Row } from "react-bootstrap";
+import { Form, InputGroup, Button, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import schema from "./validation-schema";
+import userService from "../../../services/user-service";
 
 const SignUp: React.FC = () => {
     return (
         <Formik
             validationSchema={schema}
-            onSubmit={console.log}
+            onSubmit={(data) => {
+                userService.isTakenUsername({username: data.username}).then(data => {
+                    console.log(data);
+                });
+            }}
             initialValues={{
                 username: '',
                 email: "",
