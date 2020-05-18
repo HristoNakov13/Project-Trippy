@@ -1,25 +1,70 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import "../Auth.css";
 
 import { Formik, Field } from "formik";
 import { Form, InputGroup, Button, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import schema from "./validation-schema";
 import userService from "../../../services/user-service";
+import "../../../util/has-key";
+
+import CreateUser from "./create-user-interface";
+import HttpError from "../../../util/errors/http-error";
+import hasKey from "../../../util/has-key";
+
+interface ServerErrors {
+    email: string,
+    username: string,
+    password: string,
+}
+
+interface ResponseError {
+    property: string,
+    message: string,
+}
 
 const SignUp: React.FC = () => {
+    const initialServerErrors: ServerErrors = {
+        email: "",
+        username: "",
+        password: "",
+    };
+
+    const [serverErrors, setServerErrors] = useState(initialServerErrors);
+    const history = useHistory();
+
+    const onbSubmit = useMemo(() => ((userData: CreateUser, { setSubmitting, setErrors, isSubmitting }: any) => {
+        setSubmitting(true);
+        userService.signUp(userData)
+            .then((res) => {
+                history.push("/login");
+            })
+            .catch((httpError: HttpError) => {
+                httpError.res.json()
+                    .then(errorData => {
+                        errorData.errors.map((err: ResponseError) => {
+                            if (hasKey(serverErrors, err.property)) {
+                                serverErrors[err.property] = err.message;
+                            }
+                        });
+                        setErrors({ ...serverErrors });
+                        serverErrors.email = "";
+                        serverErrors.username = "";
+                        serverErrors.password = "";
+                    });
+            }).finally(() => {
+                setSubmitting(false);
+            });
+    }), [history, serverErrors]);
+
     return (
         <Formik
             validationSchema={schema}
-            onSubmit={(data) => {
-                userService.isTakenUsername({username: data.username}).then(data => {
-                    console.log(data);
-                });
-            }}
+            onSubmit={onbSubmit}
             initialValues={{
-                username: '',
                 email: "",
+                username: '',
                 password: "",
                 confirmPassword: "",
             }}

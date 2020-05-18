@@ -2,7 +2,6 @@ package trippy.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +12,15 @@ import trippy.domain.models.binding.availabilitycheck.EmailCheckBindingModel;
 import trippy.domain.models.binding.availabilitycheck.UsernameCheckBindingModel;
 import trippy.domain.models.service.UserServiceModel;
 import trippy.services.UserService;
+import trippy.util.validator.ErrorResponse;
 import trippy.util.validator.ValidationError;
 import trippy.util.validator.ValidatorUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static trippy.util.constants.UserValidationConstants.ERROR_RESPONSE_TITLE;
+import static trippy.util.constants.UserValidationConstants.ERROR_RESPONSE_TYPE;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -54,16 +58,54 @@ public class AuthController {
         return ResponseEntity.ok(isTaken);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/sign-up", produces = "application/json")
-    public ResponseEntity signUpUser(@RequestBody UserSignUpBindingModel userBindingModel) {
+    //this looks absolutely disgusting but at least it werks
+    //TODO refactor down the road
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<UserSignUpBindingModel> signUpUser(@RequestBody UserSignUpBindingModel userBindingModel) {
         List<ValidationError> errors = this.validatorUtil.getErrors(userBindingModel);
 
-        if (errors.isEmpty()) {
-            return new ResponseEntity(HttpStatus.OK);
+        if (!errors.isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse(ERROR_RESPONSE_TITLE, ERROR_RESPONSE_TYPE, errors);
+
+            return new ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        this.userService.signUp(this.modelMapper.map(userBindingModel, UserServiceModel.class));
+        try {
+            this.userService.signUp(this.modelMapper.map(userBindingModel, UserServiceModel.class));
+            return ResponseEntity.ok(userBindingModel);
 
-        return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    ERROR_RESPONSE_TITLE,
+                    ERROR_RESPONSE_TYPE,
+                    this.extractErrors(e.getMessage())
+            );
+
+            return new ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private List<ValidationError> extractErrors(String errorMessage) {
+        String[] msgSplit = errorMessage.split("\\s+\\|\\s+");
+
+        String[] properties = msgSplit[0]
+                .replace("property: ", "")
+                .split(",\\s+");
+
+        String[] messages = msgSplit[1]
+                .replace("message: ", "")
+                .split(",\\s+");
+
+        List<ValidationError> validationErrors = new ArrayList<>();
+
+        for (int i = 0; i < properties.length; i++) {
+            ValidationError error = new ValidationError();
+            error.setProperty(properties[i]);
+            error.setMessage(messages[i]);
+
+            validationErrors.add(error);
+        }
+
+        return validationErrors;
     }
 }

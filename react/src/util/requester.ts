@@ -1,8 +1,12 @@
+import HttpError from "./errors/http-error";
+
 const fetchData = (URL: string, headers: RequestInit): Promise<any> => {
     return fetch(URL, headers)
         .then(res => {
             if (!res.ok) {
-                throw new Error(res.statusText);
+                const httpError = new HttpError(res.statusText, res);
+
+                throw httpError;
             }
 
             return res;

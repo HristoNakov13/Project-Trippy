@@ -7,6 +7,13 @@ import trippy.domain.models.service.UserServiceModel;
 
 public interface UserService extends UserDetailsService {
 
+    /**
+     * Saves the given user to the database.
+     *
+     * @param user {@link UserServiceModel} the user to be saved in the database.
+     * @throws IllegalArgumentException if the user to be saved has the same username or email
+     * as another existing user entity from the database.
+     */
     void signUp(UserServiceModel user);
 
     /**

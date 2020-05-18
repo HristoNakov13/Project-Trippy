@@ -3,6 +3,7 @@ package trippy.services.implementations;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import trippy.domain.entities.User;
 import trippy.domain.entities.UserRole;
@@ -14,27 +15,76 @@ import trippy.services.UserService;
 import java.util.HashSet;
 import java.util.Set;
 
+import static trippy.util.constants.UserValidationConstants.EMAIL_TAKEN;
+import static trippy.util.constants.UserValidationConstants.USERNAME_TAKEN;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
-    }
-
-
-    @Override
-    public void signUp(UserServiceModel user) {
-        //TODO
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
+     */
+    @Override
+    public void signUp(UserServiceModel user) {
+        User userEntity = this.modelMapper.map(user, User.class);
+
+        boolean isTakenEmail = this.isTakenEmail(userEntity.getEmail());
+        boolean isTakenUsername = this.isTakenUsername(userEntity.getUsername());
+
+        //not sure if an exception for each case is acceptable at this point. EmailTakenException etc
+        if (isTakenEmail && isTakenUsername) {
+            throw new IllegalArgumentException(
+                    String.format("property: email, username | message: %s, %s",
+                            EMAIL_TAKEN,
+                            USERNAME_TAKEN)
+            );
+        }
+
+        if (isTakenEmail) {
+            throw new IllegalArgumentException(
+                    String.format("property: email | message: %s",
+                            EMAIL_TAKEN)
+            );
+        }
+
+        if (isTakenUsername) {
+            throw new IllegalArgumentException(
+                    String.format("property: username | message: %s",
+                            USERNAME_TAKEN)
+            );
+        }
+
+        userEntity.setRoles(this.getAssignedRoles());
+        userEntity.setEnabled(true);
+        userEntity.setPassword(this.encodePassword(userEntity.getPassword()));
+
+        this.userRepository.saveAndFlush(userEntity);
+    }
+
+    /**
+     * Encodes the password of a user.
+     *
+     * @param password {@code String} the user's password.
+     * @return {@code String} encoded password.
+     */
+    private String encodePassword (String password){
+        return this.bCryptPasswordEncoder.encode(password);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public UserServiceModel getUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean isTakenUsername(String username) {
@@ -56,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean isTakenEmail(String email) {

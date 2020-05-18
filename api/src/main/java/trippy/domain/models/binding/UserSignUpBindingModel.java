@@ -16,7 +16,7 @@ public class UserSignUpBindingModel {
     public UserSignUpBindingModel() {
     }
 
-    @NotNull(message = Username_REQUIRED)
+    @NotNull(message = USERNAME_IS_REQUIRED)
     @Length(min = MIN_USERNAME_LENGTH, max = MAX_USERNAME_LENGTH, message = INVALID_USERNAME_LENGTH_MSG)
     public String getUsername() {
         return username;

@@ -7,6 +7,7 @@ import java.util.Set;
 public class UserServiceModel {
 
     private String username;
+    private String email;
     private String password;
     private boolean isEnabled;
     private Set<UserRole> roles;
@@ -44,5 +45,13 @@ public class UserServiceModel {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
