@@ -7,21 +7,16 @@ import { Link, useHistory } from "react-router-dom";
 
 import schema from "./validation-schema";
 import userService from "../../../services/user-service";
-import "../../../util/has-key";
-
-import CreateUser from "./create-user-interface";
 import HttpError from "../../../util/errors/http-error";
 import hasKey from "../../../util/has-key";
+
+import CreateUser from "./create-user-interface";
+import ResponseError from "../response-error-interface";
 
 interface ServerErrors {
     email: string,
     username: string,
     password: string,
-}
-
-interface ResponseError {
-    property: string,
-    message: string,
 }
 
 const SignUp: React.FC = () => {

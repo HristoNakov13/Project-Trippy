@@ -4,8 +4,14 @@ import "./Header.css";
 import { NavDropdown, Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../../static/images/test-logo.png";
+import LoggedUser from "../auth/LogIn/logged-user-interface";
 
-const Navigation: React.FC = () => {
+interface Props {
+    isLoggedIn: boolean,
+    user: LoggedUser,
+}
+
+const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
     return (
         <Fragment>
             <header className="site-header">

@@ -1,16 +1,33 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo, useState, useContext } from "react";
 import "../Auth.css";
 
 import { Formik, Field } from "formik";
-import { Link } from "react-router-dom";
-import { Form, Button, Col, FormGroup, Row } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
+import { Form, Button, Col, FormGroup } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
+
+import { UserContext } from "../../../contexts/user/UserContext";
+
+import Credentials from "./credentials-interface";
 
 
 const LogIn: React.FC = () => {
+    const history = useHistory();
+    const [serverError, setServerError] = useState("");
+    const { login } = useContext(UserContext);
+
+    const onbSubmit = useMemo(() => ((credentials: Credentials) => {
+        login(credentials)
+            .then(() => {
+                history.push("/");
+            }).catch(() => {
+                setServerError("Incorrect username or password");
+            });
+    }), [history, login]);
+
     return (
         <Formik
-            onSubmit={console.log}
+            onSubmit={onbSubmit}
             initialValues={{
                 usernameEmail: '',
                 password: "",
@@ -22,10 +39,11 @@ const LogIn: React.FC = () => {
                 handleChange,
                 handleBlur,
                 values,
+                touched,
                 errors,
             }) => (
                     <Fragment>
-                        <Form onSubmit={handleSubmit}>
+                        <Form noValidate onSubmit={handleSubmit}>
                             <h1 className="form-title">Log In</h1>
                             <Form.Group controlId="email-username">
                                 <InputGroup>
@@ -37,7 +55,11 @@ const LogIn: React.FC = () => {
                                         name="usernameEmail"
                                         placeholder="email/username..."
                                         value={values.usernameEmail}
+                                        isInvalid={touched.usernameEmail && !!serverError}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {serverError}
+                                    </Form.Control.Feedback>
                                 </InputGroup>
                             </Form.Group>
                             <Form.Group controlId="password">

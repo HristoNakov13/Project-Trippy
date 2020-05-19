@@ -12,6 +12,7 @@ import trippy.repositories.UserRepository;
 import trippy.repositories.UserRoleRepository;
 import trippy.services.UserService;
 
+import javax.security.auth.login.CredentialNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -93,6 +94,18 @@ public class UserServiceImpl implements UserService {
 
         return this.modelMapper.map(user, UserServiceModel.class);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserServiceModel getUserByUsernameOrEmail(String usernameEmail) throws CredentialNotFoundException {
+        User user = this.userRepository.findByUsernameOrEmail(usernameEmail, usernameEmail)
+                .orElseThrow(() -> new CredentialNotFoundException("User not found."));
+
+        return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
 
     /**
      * {@inheritDoc}

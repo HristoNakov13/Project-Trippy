@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import trippy.domain.entities.User;
 import trippy.domain.models.service.UserServiceModel;
 
+import javax.security.auth.login.CredentialNotFoundException;
+
 public interface UserService extends UserDetailsService {
 
     /**
@@ -25,6 +27,8 @@ public interface UserService extends UserDetailsService {
      * @throws UsernameNotFoundException if no user with the given username is found in the database.
      */
     UserServiceModel getUserByUsername(String username);
+
+    UserServiceModel getUserByUsernameOrEmail(String usernameEmail) throws CredentialNotFoundException;
 
     /**
      * Checks if the database contains a {@link User} with the given username.

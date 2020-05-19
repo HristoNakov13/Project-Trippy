@@ -9,12 +9,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import trippy.services.UserService;
+import trippy.web.filters.JwtRequestFilter;
 
 import java.util.Arrays;
 
@@ -24,11 +26,11 @@ import java.util.Arrays;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-//    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    public WebSecurityConfiguration(UserService userService) {
+    public WebSecurityConfiguration(UserService userService, JwtRequestFilter jwtRequestFilter) {
         this.userService = userService;
-//        this.jwtRequestFilter = jwtRequestFilter;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Override
@@ -45,9 +47,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        ;
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     private CsrfTokenRepository csrfTokenRepository() {
