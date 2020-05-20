@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import trippy.domain.models.binding.Credentials;
-import trippy.domain.models.binding.UserSignUpBindingModel;
-import trippy.domain.models.binding.availabilitycheck.EmailCheckBindingModel;
-import trippy.domain.models.binding.availabilitycheck.UsernameCheckBindingModel;
+import trippy.domain.models.binding.auth.Credentials;
+import trippy.domain.models.binding.auth.UserSignUpBindingModel;
+import trippy.domain.models.binding.auth.availabilitycheck.EmailCheckBindingModel;
+import trippy.domain.models.binding.auth.availabilitycheck.UsernameCheckBindingModel;
 import trippy.domain.models.service.UserServiceModel;
 import trippy.domain.models.view.UserLoggedViewModel;
 import trippy.services.UserService;
@@ -115,7 +115,7 @@ public class AuthController {
         return ResponseEntity.ok(userLoggedViewModel);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, path = "/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         Cookie jwtCookie = request.getCookies() == null
                 ? null
@@ -126,11 +126,13 @@ public class AuthController {
 
         if (jwtCookie != null) {
             jwtCookie.setMaxAge(0);
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setTitle(INVALID_LOGOUT_REQUEST);
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

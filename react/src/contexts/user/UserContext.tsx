@@ -5,7 +5,7 @@ import Credentials from "../../components/auth/LogIn/credentials-interface";
 
 import reducer from "./reducer";
 import actions from "./actions";
-import userService from "../../services/user-service";
+import authService from "../../services/auth-service";
 
 export const UserContext = createContext({} as any);
 
@@ -13,14 +13,14 @@ const UserContextProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, {} as any);
 
     const login = (credentials: Credentials) => {
-        return userService.login(credentials)
+        return authService.login(credentials)
             .then((userData: LoggedUser) => {
                 dispatch({ type: actions.login, payload: userData });
             });
     };
 
     const auth = () => {
-        userService.auth()
+        authService.auth()
             .then((userData: LoggedUser) => {
                 dispatch({type: actions.authSuccess, payload: userData});
             })

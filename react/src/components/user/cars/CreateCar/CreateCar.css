@@ -3,3 +3,19 @@
     margin-bottom: 1em;
     text-decoration: underline;
 }
+
+input[type=checkbox] + label {
+    color: rgb(255, 255, 255, 0.6);
+}
+
+input[type=checkbox]:checked + label {
+    color: rgb(99, 160, 9);  
+}
+
+.button-wrap {
+    padding: 1em;
+    margin-top: 2em;
+    text-align: center;
+}
+
+

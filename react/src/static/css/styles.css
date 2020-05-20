@@ -5,10 +5,19 @@
     }
 }
 
+h1, h2, h3, h4, h5, h6 {
+    padding-bottom: 0.5em;
+}
+
 .viewport {
     min-height: 100vh;
     background-color: #181520;
     color: #FFF;
+}
+
+.form-title {
+    color: rgb(255, 255, 255, 0.7);
+    text-align: center;
 }
 
 .anchor {
@@ -19,8 +28,4 @@
 .anchor:hover {
     color: #FFF;
     transition: color 0.2s ease-in-out;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    padding-bottom: 0.5em;
 }

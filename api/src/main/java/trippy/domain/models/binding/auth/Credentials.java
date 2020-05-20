@@ -1,4 +1,4 @@
-package trippy.domain.models.binding;
+package trippy.domain.models.binding.auth;
 
 public class Credentials {
 

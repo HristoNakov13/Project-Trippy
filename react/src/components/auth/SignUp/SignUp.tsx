@@ -6,7 +6,7 @@ import { Form, InputGroup, Button, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 
 import schema from "./validation-schema";
-import userService from "../../../services/user-service";
+import authService from "../../../services/auth-service";
 import HttpError from "../../../util/errors/http-error";
 import hasKey from "../../../util/has-key";
 
@@ -31,7 +31,7 @@ const SignUp: React.FC = () => {
 
     const onbSubmit = useMemo(() => ((userData: CreateUser, { setSubmitting, setErrors, isSubmitting }: any) => {
         setSubmitting(true);
-        userService.signUp(userData)
+        authService.signUp(userData)
             .then((res) => {
                 history.push("/login");
             })

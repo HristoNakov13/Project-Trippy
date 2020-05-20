@@ -1,4 +1,4 @@
-package trippy.domain.models.binding.availabilitycheck;
+package trippy.domain.models.binding.auth.availabilitycheck;
 
 public class UsernameCheckBindingModel {
 

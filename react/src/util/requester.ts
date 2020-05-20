@@ -4,6 +4,8 @@ const fetchData = (URL: string, headers: RequestInit): Promise<any> => {
     return fetch(URL, headers)
         .then(res => {
             if (!res.ok) {
+
+                console.log(res);
                 const httpError = new HttpError(res.statusText, res);
 
                 throw httpError;
@@ -18,8 +20,8 @@ const fetchData = (URL: string, headers: RequestInit): Promise<any> => {
         });
 };
 
-const buildHeaders = (httpMethod: string, data?: Object | Array<any>): RequestInit => {
-    const headers: any = {
+const buildHeaders = (httpMethod: string, data?: any): RequestInit => {
+    const headers: RequestInit = {
         method: httpMethod,
         headers: {
             "Content-Type": "application/json",
@@ -46,14 +48,28 @@ const httpMethod = (method: string) => {
         const URL = buildURL(endpoint);
 
         return fetchData(URL, headers)
-    }
+    };
 };
+
+const uploadFile = (endPoint: string, data: FormData) => {
+    const url = buildURL(endPoint);
+    const header: RequestInit = {
+        method: "POST",
+        headers: {
+            credentials: 'include',
+        },
+        body: data
+    }
+
+    return fetchData(url, header);
+}
 
 const http = {
     get: httpMethod("GET"),
     post: httpMethod("POST"),
     put: httpMethod("PUT"),
-    del: httpMethod("DEL")
+    del: httpMethod("DEL"),
+    uploadFile
 };
 
 export default http;

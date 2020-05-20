@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import userService from "../../../services/user-service";
+import authService from "../../../services/auth-service";
 
 const MIN_USERNAME_LENGTH = 5;
 const MAX_USERNAME_LENGTH = 50;
@@ -31,7 +31,7 @@ const schema = yup.object({
             //but a "resp" with true from the userService response means the username is taken
             //and thats where the flip comes in
             return new Promise((resolve, reject) => {
-                userService.isTakenUsername({ username })
+                authService.isTakenUsername({ username })
                     .then((resp) => {
                         resolve(!resp);
                     });
@@ -47,7 +47,7 @@ const schema = yup.object({
 
             //same boolean value flip applies to email as in username
             return new Promise((resolve, reject) => {
-                userService.isTakenEmail({ email })
+                authService.isTakenEmail({ email })
                     .then((resp) => {
                         resolve(!resp);
                     });
