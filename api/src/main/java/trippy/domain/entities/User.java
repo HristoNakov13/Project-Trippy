@@ -14,6 +14,7 @@ public class User extends BaseEntity implements UserDetails {
     private String email;
     private boolean isEnabled;
     private Set<UserRole> roles;
+    private Set<Car> cars;
 
     public User() {
     }
@@ -93,5 +94,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @OneToMany(mappedBy = "owner")
+    public Set<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<Car> cars) {
+        this.cars = cars;
     }
 }

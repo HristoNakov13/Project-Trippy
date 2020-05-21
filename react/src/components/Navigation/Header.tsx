@@ -1,10 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import "./Header.css";
 
 import { NavDropdown, Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../static/images/test-logo.png";
 import LoggedUser from "../auth/LogIn/logged-user-interface";
+
+import authService from "../../services/auth-service";
 
 interface Props {
     isLoggedIn: boolean,
@@ -12,6 +14,14 @@ interface Props {
 }
 
 const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
+    const history = useHistory();
+    const handleLogOut = useMemo(() => (() => {
+        authService.loguout()
+            .finally(() => {
+                history.push("/");
+            });
+    }), [history]);
+
     return (
         <Fragment>
             <header className="site-header">
@@ -42,7 +52,7 @@ const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
                                 <NavDropdown.Item as={Link} to="/user/my-cars"><i className="fas fa-car" /> My Cars</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/user/settings"><i className="fas fa-cog" /> Settings</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item as={Link} to="/logout"><i className="fas fa-sign-out-alt" /> Logout</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} onClick={handleLogOut} to="/logout" ><i className="fas fa-sign-out-alt" /> Logout</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>

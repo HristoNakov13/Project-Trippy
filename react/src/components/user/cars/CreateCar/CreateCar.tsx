@@ -22,23 +22,25 @@ const CreateCar: React.FC = () => {
     };
 
     const onSubmit = (carData: Car) => {
-        userService.createCar(carData).then((res) => {
-            if (!carImage) {
-                history.push("/");
-
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("file", carImage);
-            formData.append("carId", res.id);
-
-            userService.uploadCarImage(formData)
-                .then(() => {
+        userService.createCar(carData)
+            .then((res) => {
+                console.log(res);
+                if (!carImage) {
                     history.push("/");
-                })
-                .catch(console.error);
-        }).catch(console.error)
+
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("file", carImage);
+                formData.append("carId", res.id);
+
+                userService.uploadCarImage(formData)
+                    .then(() => {
+                        history.push("/");
+                    })
+                    .catch(console.error);
+            }).catch(console.error)
     };
 
     return (

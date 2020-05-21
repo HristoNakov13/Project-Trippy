@@ -99,6 +99,16 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
+    public UserServiceModel getUserById(String id) {
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserServiceModel getUserByUsernameOrEmail(String usernameEmail) throws CredentialNotFoundException {
         User user = this.userRepository.findByUsernameOrEmail(usernameEmail, usernameEmail)
                 .orElseThrow(() -> new CredentialNotFoundException("User not found."));

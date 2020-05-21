@@ -1,5 +1,9 @@
 package trippy.domain.models.binding.car;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class CarCreateBindingModel {
 
     private String make;
@@ -12,6 +16,7 @@ public class CarCreateBindingModel {
     private boolean hasLuggageSpace;
     private boolean hasAirConditioning;
 
+    @NotNull
     public String getMake() {
         return make;
     }
@@ -20,6 +25,7 @@ public class CarCreateBindingModel {
         this.make = make;
     }
 
+    @NotNull
     public String getModel() {
         return model;
     }
@@ -28,6 +34,8 @@ public class CarCreateBindingModel {
         this.model = model;
     }
 
+    @Min(value = 1)
+    @Max(value = 5)
     public int getPassengerCapacity() {
         return passengerCapacity;
     }
@@ -36,7 +44,7 @@ public class CarCreateBindingModel {
         this.passengerCapacity = passengerCapacity;
     }
 
-    public boolean isCanEat() {
+    public boolean canEat() {
         return canEat;
     }
 
@@ -44,7 +52,7 @@ public class CarCreateBindingModel {
         this.canEat = canEat;
     }
 
-    public boolean isCanDrink() {
+    public boolean canDrink() {
         return canDrink;
     }
 
@@ -52,7 +60,7 @@ public class CarCreateBindingModel {
         this.canDrink = canDrink;
     }
 
-    public boolean isCanSmoke() {
+    public boolean canSmoke() {
         return canSmoke;
     }
 
@@ -68,7 +76,7 @@ public class CarCreateBindingModel {
         this.petsAllowed = petsAllowed;
     }
 
-    public boolean isHasLuggageSpace() {
+    public boolean hasLuggageSpace() {
         return hasLuggageSpace;
     }
 
@@ -76,7 +84,7 @@ public class CarCreateBindingModel {
         this.hasLuggageSpace = hasLuggageSpace;
     }
 
-    public boolean isHasAirConditioning() {
+    public boolean hasAirConditioning() {
         return hasAirConditioning;
     }
 

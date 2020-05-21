@@ -18,6 +18,7 @@ import trippy.domain.models.binding.auth.availabilitycheck.UsernameCheckBindingM
 import trippy.domain.models.service.UserServiceModel;
 import trippy.domain.models.view.UserLoggedViewModel;
 import trippy.services.UserService;
+import trippy.util.CookiesUtil.CookieUtil;
 import trippy.util.constants.UserAuthConstants;
 import trippy.util.jwt.JwtUtil;
 import trippy.util.validator.ErrorResponse;
@@ -44,13 +45,15 @@ public class AuthController {
     private final ModelMapper modelMapper;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
+    private final CookieUtil cookieUtil;
 
-    public AuthController(UserService userService, ValidatorUtil validatorUtil, ModelMapper modelMapper, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
+    public AuthController(UserService userService, ValidatorUtil validatorUtil, ModelMapper modelMapper, JwtUtil jwtUtil, AuthenticationManager authenticationManager, CookieUtil cookieUtil) {
         this.userService = userService;
         this.validatorUtil = validatorUtil;
         this.modelMapper = modelMapper;
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
+        this.cookieUtil = cookieUtil;
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/availability-check/username")
@@ -101,7 +104,7 @@ public class AuthController {
         String token = jwtUtil.generateToken(userDetails);
         UserLoggedViewModel userLoggedViewModel = this.modelMapper.map(userDetails, UserLoggedViewModel.class);
 
-        Cookie cookie = new Cookie("_AUTH", token);
+        Cookie cookie = new Cookie(JWT_COOKIE_NAME, token);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
 
@@ -116,34 +119,19 @@ public class AuthController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        Cookie jwtCookie = request.getCookies() == null
-                ? null
-                : Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("_AUTH"))
-                .findFirst()
-                .orElse(null);
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse res) {
+        Cookie jwtCookie = new Cookie(JWT_COOKIE_NAME, "");
+        jwtCookie.setMaxAge(0);
 
-        if (jwtCookie != null) {
-            jwtCookie.setMaxAge(0);
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.addCookie(jwtCookie);
 
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setTitle(INVALID_LOGOUT_REQUEST);
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<UserLoggedViewModel> authUser(HttpServletRequest request) {
-        Cookie jwtCookie = request.getCookies() == null
-                ? null
-                : Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("_AUTH"))
-                .findFirst()
-                .orElse(null);
+        Cookie jwtCookie = this.cookieUtil.extractCookie(request, JWT_COOKIE_NAME);
 
         UserDetails userDetails = jwtCookie == null
                 ? null

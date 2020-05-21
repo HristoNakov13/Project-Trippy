@@ -4,6 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import trippy.util.CookiesUtil.CookieUtil;
+import trippy.util.CookiesUtil.CookieUtilImpl;
 import trippy.util.validator.ValidatorUtil;
 import trippy.util.validator.ValidatorUtilImpl;
 
@@ -23,5 +25,10 @@ public class AppBeanConfiguration {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CookieUtil cookieUtil() {
+        return new CookieUtilImpl();
     }
 }

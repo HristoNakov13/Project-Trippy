@@ -7,6 +7,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import trippy.services.UserService;
+import trippy.util.CookiesUtil.CookieUtil;
 import trippy.util.jwt.JwtUtil;
 
 import javax.servlet.FilterChain;
@@ -17,25 +18,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static trippy.util.constants.UserAuthConstants.JWT_COOKIE_NAME;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final CookieUtil cookieUtil;
 
-    public JwtRequestFilter(JwtUtil jwtUtil, UserService userService) {
+    public JwtRequestFilter(JwtUtil jwtUtil, UserService userService, CookieUtil cookieUtil) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
+        this.cookieUtil = cookieUtil;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie jwtCookie = request.getCookies() == null
-                ? null
-                : Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("_AUTH"))
-                .findFirst()
-                .orElse(null);
+        Cookie jwtCookie = this.cookieUtil.extractCookie(request, JWT_COOKIE_NAME);
 
         String username = null;
         String jwt = null;

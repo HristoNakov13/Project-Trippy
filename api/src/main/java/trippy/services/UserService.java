@@ -22,12 +22,22 @@ public interface UserService extends UserDetailsService {
      * Tries to find a user by the given username from the database.
      * If found {@link User} is mapped to and returned as {@link UserServiceModel}.
      *
-     * @param username {@code String} the unique name of a {@link User}
-     * @return {@link UserServiceModel} a transformed version of {@link User}
+     * @param username {@code String} the unique name of a {@link User}.
+     * @return {@link UserServiceModel} a transformed version of {@link User}.
      * @throws UsernameNotFoundException if no user with the given username is found in the database.
      */
     UserServiceModel getUserByUsername(String username);
 
+    UserServiceModel getUserById(String id);
+
+    /**
+     *Tries to find a user by the given username or email from the database.
+     *If found {@link User} is mapped to and returned as {@link UserServiceModel}.
+     *
+     * @param usernameEmail {@code String} the unique name or email of a {@link User}.
+     * @return {@link UserServiceModel} a transformed version of {@link User}.
+     * @throws CredentialNotFoundException if no user with the given username or email is found in the database.
+     */
     UserServiceModel getUserByUsernameOrEmail(String usernameEmail) throws CredentialNotFoundException;
 
     /**
