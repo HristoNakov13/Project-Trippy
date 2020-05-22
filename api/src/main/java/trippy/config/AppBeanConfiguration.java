@@ -4,8 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import trippy.util.CookiesUtil.CookieUtil;
-import trippy.util.CookiesUtil.CookieUtilImpl;
+import trippy.util.cookies.CookieUtil;
+import trippy.util.cookies.CookieUtilImpl;
+import trippy.util.images.ImageUtil;
+import trippy.util.images.ImageUtilImpl;
 import trippy.util.validator.ValidatorUtil;
 import trippy.util.validator.ValidatorUtilImpl;
 
@@ -30,5 +32,10 @@ public class AppBeanConfiguration {
     @Bean
     public CookieUtil cookieUtil() {
         return new CookieUtilImpl();
+    }
+
+    @Bean
+    public ImageUtil imageUtil() {
+        return new ImageUtilImpl();
     }
 }

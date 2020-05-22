@@ -6,11 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import trippy.domain.entities.Image;
 import trippy.domain.models.binding.car.CarCreateBindingModel;
 import trippy.domain.models.service.CarServiceModel;
 import trippy.domain.models.view.CarCreatedViewModel;
 import trippy.services.CarService;
+import trippy.services.ImageService;
+import trippy.util.images.ImageUploadRes;
+import trippy.util.images.ImageUtil;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -19,10 +24,14 @@ public class UserController {
 
     private final CarService carService;
     private final ModelMapper modelMapper;
+    private final ImageUtil imageUtil;
+    private final ImageService imageService;
 
-    public UserController(CarService carService, ModelMapper modelMapper) {
+    public UserController(CarService carService, ModelMapper modelMapper, ImageUtil imageUtil, ImageService imageService) {
         this.carService = carService;
         this.modelMapper = modelMapper;
+        this.imageUtil = imageUtil;
+        this.imageService = imageService;
     }
 
     //TODO validation
@@ -35,10 +44,14 @@ public class UserController {
         return new ResponseEntity<>(carCreatedViewModel, HttpStatus.CREATED);
     }
 
-    //TODO integrate cloudinary
+    //TODO splice the two methods into one
     @RequestMapping(method = RequestMethod.POST, path = "/upload/car-image", consumes = "multipart/form-data")
-    public ResponseEntity image(@RequestParam("file") MultipartFile carImage, @RequestParam("carId") String carId) {
-        System.out.println();
+    public ResponseEntity image(@RequestParam("file") MultipartFile carImage, @RequestParam("carId") String carId) throws IOException {
+//        ImageUploadRes uploadResponse = this.imageUtil.uploadImage(carImage);
+//        Image image = this.imageService.saveImage(uploadResponse);
+//        this.carService.setCarImage(carId, image);
+        String contentType = carImage.getContentType();
+
 
         return ResponseEntity.ok(true);
     }

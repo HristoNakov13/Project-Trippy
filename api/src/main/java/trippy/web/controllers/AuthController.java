@@ -18,7 +18,7 @@ import trippy.domain.models.binding.auth.availabilitycheck.UsernameCheckBindingM
 import trippy.domain.models.service.UserServiceModel;
 import trippy.domain.models.view.UserLoggedViewModel;
 import trippy.services.UserService;
-import trippy.util.CookiesUtil.CookieUtil;
+import trippy.util.cookies.CookieUtil;
 import trippy.util.constants.UserAuthConstants;
 import trippy.util.jwt.JwtUtil;
 import trippy.util.validator.ErrorResponse;
@@ -30,7 +30,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static trippy.util.constants.UserAuthConstants.*;

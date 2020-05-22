@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import trippy.services.UserService;
-import trippy.util.CookiesUtil.CookieUtil;
+import trippy.util.cookies.CookieUtil;
 import trippy.util.jwt.JwtUtil;
 
 import javax.servlet.FilterChain;
@@ -16,7 +16,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 import static trippy.util.constants.UserAuthConstants.JWT_COOKIE_NAME;
 

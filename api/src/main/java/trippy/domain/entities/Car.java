@@ -15,8 +15,8 @@ public class Car extends BaseEntity {
     private boolean petsAllowed;
     private boolean hasLuggageSpace;
     private boolean hasAirConditioning;
-    private String imageCloudId;
     private User owner;
+    private Image image;
 
     public Car() {
     }
@@ -102,15 +102,6 @@ public class Car extends BaseEntity {
         this.hasAirConditioning = hasAirConditioning;
     }
 
-    @Column(name = "image_cloud_id")
-    public String getImageCloudId() {
-        return imageCloudId;
-    }
-
-    public void setImageCloudId(String imageCloudId) {
-        this.imageCloudId = imageCloudId;
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getOwner() {
@@ -119,5 +110,14 @@ public class Car extends BaseEntity {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    @OneToOne
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

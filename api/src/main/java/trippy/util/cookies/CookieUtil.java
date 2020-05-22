@@ -1,4 +1,4 @@
-package trippy.util.CookiesUtil;
+package trippy.util.cookies;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
