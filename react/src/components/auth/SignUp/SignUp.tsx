@@ -9,18 +9,19 @@ import schema from "./validation-schema";
 import authService from "../../../services/auth-service";
 import HttpError from "../../../util/errors/http-error";
 import hasKey from "../../../util/has-key";
+import ServerValidationErrors from "../../../shared/errorhandler/server-validation-error-handler";
 
 import CreateUser from "./create-user-interface";
-import ResponseError from "../response-error-interface";
+import serverValidationErrorHandler from "../../../shared/errorhandler/server-validation-error-handler";
 
-interface ServerErrors {
+interface ServerValidationErrors {
     email: string,
     username: string,
     password: string,
 }
 
 const SignUp: React.FC = () => {
-    const initialServerErrors: ServerErrors = {
+    const initialServerErrors: ServerValidationErrors = {
         email: "",
         username: "",
         password: "",
@@ -29,27 +30,13 @@ const SignUp: React.FC = () => {
     const [serverErrors, setServerErrors] = useState(initialServerErrors);
     const history = useHistory();
 
-    const onbSubmit = useMemo(() => ((userData: CreateUser, { setSubmitting, setErrors, isSubmitting }: any) => {
-        setSubmitting(true);
+    const onbSubmit = useMemo(() => ((userData: CreateUser, { setErrors }: any) => {
         authService.signUp(userData)
             .then((res) => {
                 history.push("/login");
             })
-            .catch((httpError: HttpError) => {
-                httpError.res.json()
-                    .then(errorData => {
-                        errorData.errors.map((err: ResponseError) => {
-                            if (hasKey(serverErrors, err.property)) {
-                                serverErrors[err.property] = err.message;
-                            }
-                        });
-                        setErrors({ ...serverErrors });
-                        serverErrors.email = "";
-                        serverErrors.username = "";
-                        serverErrors.password = "";
-                    });
-            }).finally(() => {
-                setSubmitting(false);
+            .catch((err) => {
+                serverValidationErrorHandler(err, setErrors);
             });
     }), [history, serverErrors]);
 
@@ -75,7 +62,7 @@ const SignUp: React.FC = () => {
             }) => (
                     <Fragment>
                         <Form noValidate onSubmit={handleSubmit}>
-                            <h1 className="form-title">Register</h1>
+                            <h1 className="page-title">Register</h1>
                             <Form.Group controlId="email">
                                 <Form.Label>Email*</Form.Label>
                                 <InputGroup>

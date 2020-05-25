@@ -1,8 +1,14 @@
 package trippy.domain.models.binding.car;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
+import trippy.util.validator.custom.ValidImage;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import static trippy.util.constants.CarValidationConstants.*;
 
 public class CarCreateBindingModel {
 
@@ -15,8 +21,10 @@ public class CarCreateBindingModel {
     private boolean petsAllowed;
     private boolean hasLuggageSpace;
     private boolean hasAirConditioning;
+    private MultipartFile image;
 
-    @NotNull
+    @NotNull(message = MAKE_REQUIRED)
+    @Length(min = MIN_MAKE_CHAR_COUNT, max = MAX_MAKE_CHAR_COUNT, message = MAKE_INVALID_LENGTH)
     public String getMake() {
         return make;
     }
@@ -25,7 +33,8 @@ public class CarCreateBindingModel {
         this.make = make;
     }
 
-    @NotNull
+    @NotNull(message = MODEL_REQUIRED)
+    @Length(min = MIN_MODEL_CHAR_COUNT, max = MAX_MODEL_CHAR_COUNT, message = MODEL_INVALID_LENGTH)
     public String getModel() {
         return model;
     }
@@ -34,8 +43,8 @@ public class CarCreateBindingModel {
         this.model = model;
     }
 
-    @Min(value = 1)
-    @Max(value = 5)
+    @Min(value = MIN_PASSENGER_CAPACITY, message = MIN_PASSENGERS_INVALID_MSG)
+    @Max(value = MAX_PASSENGER_CAPACITY, message = MAX_PASSENGERS_INVALID_MSG)
     public int getPassengerCapacity() {
         return passengerCapacity;
     }
@@ -90,5 +99,14 @@ public class CarCreateBindingModel {
 
     public void setHasAirConditioning(boolean hasAirConditioning) {
         this.hasAirConditioning = hasAirConditioning;
+    }
+
+    @ValidImage(message = INVALID_IMAGE)
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }

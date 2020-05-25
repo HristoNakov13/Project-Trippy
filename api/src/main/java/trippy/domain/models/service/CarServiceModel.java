@@ -1,5 +1,7 @@
 package trippy.domain.models.service;
 
+import trippy.domain.entities.Image;
+
 public class CarServiceModel {
 
     private String id;
@@ -11,9 +13,9 @@ public class CarServiceModel {
     private boolean canSmoke;
     private boolean petsAllowed;
     private boolean hasLuggageSpace;
-    private boolean hasAirConditioning;
-    private String imageCloudId;
+    private boolean hasAirConditioning;;
     private UserServiceModel owner;
+    private Image image;
 
     public CarServiceModel() {
     }
@@ -90,14 +92,6 @@ public class CarServiceModel {
         this.hasAirConditioning = hasAirConditioning;
     }
 
-    public String getImageCloudId() {
-        return imageCloudId;
-    }
-
-    public void setImageCloudId(String imageCloudId) {
-        this.imageCloudId = imageCloudId;
-    }
-
     public UserServiceModel getOwner() {
         return owner;
     }
@@ -112,5 +106,13 @@ public class CarServiceModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

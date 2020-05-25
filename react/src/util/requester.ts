@@ -51,13 +51,11 @@ const httpMethod = (method: string) => {
     };
 };
 
-const uploadFile = (endPoint: string, data: FormData) => {
+const formUploadFile = (endPoint: string, data: FormData) => {
     const url = buildURL(endPoint);
     const header: RequestInit = {
         method: "POST",
-        headers: {
-            credentials: 'include',
-        },
+        credentials: 'include',
         body: data
     }
 
@@ -68,8 +66,8 @@ const http = {
     get: httpMethod("GET"),
     post: httpMethod("POST"),
     put: httpMethod("PUT"),
-    del: httpMethod("DEL"),
-    uploadFile
+    del: httpMethod("DEL"), 
+    formUploadFile,
 };
 
 export default http;

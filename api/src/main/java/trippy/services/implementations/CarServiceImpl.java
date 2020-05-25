@@ -3,14 +3,11 @@ package trippy.services.implementations;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import trippy.domain.entities.Car;
-import trippy.domain.entities.Image;
 import trippy.domain.models.service.CarServiceModel;
 import trippy.domain.models.service.UserServiceModel;
 import trippy.repositories.CarRepository;
 import trippy.services.CarService;
 import trippy.services.UserService;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -34,14 +31,5 @@ public class CarServiceImpl implements CarService {
         this.carRepository.saveAndFlush(carEntity);
 
         return this.modelMapper.map(carEntity, CarServiceModel.class);
-    }
-
-    @Override
-    public void setCarImage(String carId, Image carImage) {
-        Car car = this.carRepository.findById(carId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        car.setImage(carImage);
-        this.carRepository.saveAndFlush(car);
     }
 }

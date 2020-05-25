@@ -8,10 +8,9 @@ import { useHistory } from "react-router-dom";
 
 
 import Car from "../car-interfaces";
-
 import userService from "../../../../services/user-service";
-import http from "../../../../util/requester";
-
+import schema from "./car-validation-schema";
+import serverValidationErrors from "../../../../shared/errorhandler/server-validation-error-handler";
 
 const CreateCar: React.FC = () => {
     const [carImage, setCarImage] = useState("");
@@ -21,31 +20,28 @@ const CreateCar: React.FC = () => {
         setCarImage(event.target.files[0]);
     };
 
-    const onSubmit = (carData: Car) => {
-        userService.createCar(carData)
+    const onSubmit = (carData: Car, { setErrors }: any) => {
+        const formData = new FormData();
+
+        if (!!carImage) {
+            formData.append("file", carImage);
+        }
+
+        formData.append("carData", JSON.stringify(carData));
+
+        userService.createCar(formData)
             .then((res) => {
-                console.log(res);
-                if (!carImage) {
-                    history.push("/");
-
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append("file", carImage);
-                formData.append("carId", res.id);
-
-                userService.uploadCarImage(formData)
-                    .then(() => {
-                        history.push("/");
-                    })
-                    .catch(console.error);
-            }).catch(console.error)
+                history.push(`/cars/${res.id}`);
+            })
+            .catch(err => {
+                serverValidationErrors(err, setErrors);
+            });
     };
 
     return (
         <Formik
             onSubmit={onSubmit}
+            validationSchema={schema}
             initialValues={{
                 make: "",
                 model: "",
@@ -62,6 +58,7 @@ const CreateCar: React.FC = () => {
                 handleChange,
                 handleSubmit,
                 handleBlur,
+                touched,
                 values,
                 errors,
             }) => (
@@ -69,13 +66,21 @@ const CreateCar: React.FC = () => {
                         <h1 className="form-title">Create car</h1>
                         <Form.Row className="justify-content-md-auto">
                             <Form.Group as={Col} controlId="make">
-                                <Form.Label>Make</Form.Label>
-                                <Field as={Form.Control} type="text" name="make" />
+                                <Form.Label>Make*</Form.Label>
+                                <Field as={Form.Control} type="text" name="make" isInvalid={touched.make && !!errors.make} />
+
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.make}
+                                </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="model">
-                                <Form.Label>Model</Form.Label>
-                                <Field as={Form.Control} type="text" name="model" />
+                                <Form.Label>Model*</Form.Label>
+                                <Field as={Form.Control} type="text" name="model" isInvalid={touched.model && !!errors.model} />
+
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.model}
+                                </Form.Control.Feedback>
                             </Form.Group>
                         </Form.Row>
 
@@ -85,8 +90,8 @@ const CreateCar: React.FC = () => {
                         </Form.Group>
 
                         <Form.Group controlId="available-seats">
-                            <Form.Label>Number of seats</Form.Label>
-                            <Form.Control as="select" onChange={handleChange} name="passengerCapacity">
+                            <Form.Label>Number of seats*</Form.Label>
+                            <Form.Control as="select" onChange={handleChange} onBlur={handleBlur} name="passengerCapacity" isInvalid={touched.passengerCapacity && !!errors.passengerCapacity}>
                                 <option selected disabled>Passanger capacity...</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
@@ -94,6 +99,9 @@ const CreateCar: React.FC = () => {
                                 <option value={4}>4</option>
                                 <option value={5}>5</option>
                             </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.passengerCapacity}
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <span className="checkbox-group-label">Allowed items and activities:</span>
                         <Form.Row className="mb-3">

@@ -13,16 +13,13 @@ public class UserValidationConstants {
 
     public static final int MIN_USERNAME_LENGTH = 5;
     public static final int MAX_USERNAME_LENGTH = 50;
-    //String format cannot be used as annotation attributes
-    //That is why the length values are hardcoded into the message
-    public static final String INVALID_USERNAME_LENGTH_MSG = "Username must between 5 and 50 characters";
+    public static final String INVALID_USERNAME_LENGTH_MSG = "Username must be between " + MIN_USERNAME_LENGTH + " and " + MAX_USERNAME_LENGTH + " characters";
     public static final String USERNAME_IS_REQUIRED = "Username is required";
     public static final String USERNAME_TAKEN = "Username is taken";
 
 
     public static final int MIN_PASSWORD_LENGTH = 6;
     public static final int MAX_PASSWORD_LENGTH = 250;
-    //same applies as to the username msg
-    public static final String INVALID_PASSWORD_LENGTH_MSG = "Password must between 6 and 250 characters";
+    public static final String INVALID_PASSWORD_LENGTH_MSG = "Password must be between " + MIN_PASSWORD_LENGTH + " and " + MAX_PASSWORD_LENGTH + " characters";
     public static final String PASSWORD_REQUIRED = "Password is required";
 }

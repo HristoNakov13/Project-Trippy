@@ -44,7 +44,7 @@ const LogIn: React.FC = () => {
             }) => (
                     <Fragment>
                         <Form noValidate onSubmit={handleSubmit}>
-                            <h1 className="form-title">Log In</h1>
+                            <h1 className="page-title">Log In</h1>
                             <Form.Group controlId="email-username">
                                 <InputGroup>
                                     <InputGroup.Prepend>

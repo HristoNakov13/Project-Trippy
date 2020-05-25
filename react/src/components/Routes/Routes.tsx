@@ -27,8 +27,8 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <Route path={"/"} exact component={Home} />
                 <Route path="/sign-up" exact component={isLoggedIn ? Home : SignUp} />
                 <Route path="/login" exact component={isLoggedIn ? Home : LogIn} />
-                <Route path="/user/create-car" exact component={CreateCar} />
-                <Route path="/user/my-cars" exact component={MyCars} />
+                <Route path="/user/cars" exact component={MyCars} />
+                <Route path="/user/cars/create-car" exact component={CreateCar} />
             </Switch>
         </Fragment>
     );
