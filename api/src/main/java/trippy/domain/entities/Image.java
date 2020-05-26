@@ -2,13 +2,13 @@ package trippy.domain.entities;
 
 import trippy.domain.entities.enums.ImgCloudService;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "images")
 public class Image extends BaseEntity {
 
+    //id coming from the cloud storage
     private String publicId;
 
     //Date is kept as string because response from cloudinary comes in a weird format for example: 2020-05-22T10:53:13Z
@@ -19,6 +19,7 @@ public class Image extends BaseEntity {
     public Image() {
     }
 
+    @Column(name = "public_id")
     public String getPublicId() {
         return publicId;
     }
@@ -27,6 +28,7 @@ public class Image extends BaseEntity {
         this.publicId = publicId;
     }
 
+    @Column(name = "created_at")
     public String getCreatedAt() {
         return createdAt;
     }
@@ -35,6 +37,8 @@ public class Image extends BaseEntity {
         this.createdAt = createdAt;
     }
 
+    @Column(name = "cloud_service")
+    @Enumerated(EnumType.ORDINAL)
     public ImgCloudService getImgCloudService() {
         return imgCloudService;
     }

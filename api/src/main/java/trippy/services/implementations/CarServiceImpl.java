@@ -9,6 +9,8 @@ import trippy.repositories.CarRepository;
 import trippy.services.CarService;
 import trippy.services.UserService;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class CarServiceImpl implements CarService {
 
@@ -31,5 +33,21 @@ public class CarServiceImpl implements CarService {
         this.carRepository.saveAndFlush(carEntity);
 
         return this.modelMapper.map(carEntity, CarServiceModel.class);
+    }
+
+    //if id is null spring throws IllegalArgumentException not sure if its good idea to catch it
+    //in the controller instead of handling it here in the service
+    @Override
+    public Car getCarById(String id) {
+        Car car;
+        //a bit hard to read but I really dont like throwing error twice
+        //if id or car is null then the error is thrown
+        //if id is not null then query is made to the database to find the car
+        //if the car is not found its set to null and it passes the check car == null
+        if (id == null || (car = this.carRepository.findById(id).orElse(null)) == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return car;
     }
 }

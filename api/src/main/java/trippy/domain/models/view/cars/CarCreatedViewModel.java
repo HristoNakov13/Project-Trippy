@@ -1,4 +1,4 @@
-package trippy.domain.models.view;
+package trippy.domain.models.view.cars;
 
 public class CarCreatedViewModel {
 

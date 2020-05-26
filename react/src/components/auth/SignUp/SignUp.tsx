@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from "react";
+import React, { Fragment, useMemo } from "react";
 import "../Auth.css";
 
 import { Formik, Field } from "formik";
@@ -7,27 +7,11 @@ import { Link, useHistory } from "react-router-dom";
 
 import schema from "./validation-schema";
 import authService from "../../../services/auth-service";
-import HttpError from "../../../util/errors/http-error";
-import hasKey from "../../../util/has-key";
-import ServerValidationErrors from "../../../shared/errorhandler/server-validation-error-handler";
 
 import CreateUser from "./create-user-interface";
 import serverValidationErrorHandler from "../../../shared/errorhandler/server-validation-error-handler";
 
-interface ServerValidationErrors {
-    email: string,
-    username: string,
-    password: string,
-}
-
 const SignUp: React.FC = () => {
-    const initialServerErrors: ServerValidationErrors = {
-        email: "",
-        username: "",
-        password: "",
-    };
-
-    const [serverErrors, setServerErrors] = useState(initialServerErrors);
     const history = useHistory();
 
     const onbSubmit = useMemo(() => ((userData: CreateUser, { setErrors }: any) => {
@@ -38,7 +22,7 @@ const SignUp: React.FC = () => {
             .catch((err) => {
                 serverValidationErrorHandler(err, setErrors);
             });
-    }), [history, serverErrors]);
+    }), [history]);
 
     return (
         <Formik

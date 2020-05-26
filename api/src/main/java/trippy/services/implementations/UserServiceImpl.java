@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import trippy.domain.entities.Car;
 import trippy.domain.entities.User;
 import trippy.domain.entities.UserRole;
 import trippy.domain.models.service.UserServiceModel;
@@ -137,6 +138,14 @@ public class UserServiceImpl implements UserService {
                 .orElse(null);
 
         return user != null;
+    }
+
+    @Override
+    public Set<Car> getUserCarsByUsername(String username) throws CredentialNotFoundException {
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new CredentialNotFoundException("User not found."));
+
+        return user.getCars();
     }
 
     @Override

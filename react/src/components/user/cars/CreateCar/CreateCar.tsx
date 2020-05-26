@@ -7,8 +7,8 @@ import { Form, Col, Row, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 
-import Car from "../car-interfaces";
-import userService from "../../../../services/user-service";
+import Car from "../car-interface";
+import carService from "../../../../services/car-service";
 import schema from "./car-validation-schema";
 import serverValidationErrors from "../../../../shared/errorhandler/server-validation-error-handler";
 
@@ -29,9 +29,9 @@ const CreateCar: React.FC = () => {
 
         formData.append("carData", JSON.stringify(carData));
 
-        userService.createCar(formData)
+        carService.createCar(formData)
             .then((res) => {
-                history.push(`/cars/${res.id}`);
+                history.push("/user/cars");
             })
             .catch(err => {
                 serverValidationErrors(err, setErrors);

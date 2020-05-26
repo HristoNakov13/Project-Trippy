@@ -14,6 +14,7 @@ public class CarCreateBindingModel {
 
     private String make;
     private String model;
+    private String color;
     private int passengerCapacity;
     private boolean canEat;
     private boolean canDrink;
@@ -108,5 +109,13 @@ public class CarCreateBindingModel {
 
     public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

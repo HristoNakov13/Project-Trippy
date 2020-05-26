@@ -2,10 +2,13 @@ package trippy.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import trippy.domain.entities.Car;
 import trippy.domain.entities.User;
 import trippy.domain.models.service.UserServiceModel;
 
 import javax.security.auth.login.CredentialNotFoundException;
+import java.util.List;
+import java.util.Set;
 
 public interface UserService extends UserDetailsService {
 
@@ -55,4 +58,13 @@ public interface UserService extends UserDetailsService {
      * @return {@code boolean}.
      */
     boolean isTakenEmail(String email);
+
+    /**
+     * Finds the {@link User} by the given username and returns all of his registered cars.
+     *
+     * @param username {@code String} the unique name of a {@link User} by which he is found.
+     * @return {@link Set<Car>} collection of cars that belong to the particular user.
+     * @throws CredentialNotFoundException if no users are found with the given {@param username}.
+     */
+    Set<Car> getUserCarsByUsername(String username) throws CredentialNotFoundException;
 }

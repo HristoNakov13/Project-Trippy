@@ -4,26 +4,28 @@ import "./CarCard.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import Car from "../car-interfaces";
+import CarListModel from "../car-list-interface";
 
 interface Props {
+    car: CarListModel
 }
 
-const CarCard: React.FC<Props> = () => {
+const CarCard: React.FC<Props> = ({ car }) => {
     return <Fragment>
         <Card>
-            <Card.Img variant="top" src="https://g1-bg.cars.bg/2020-03-18_2/5e725a564cd10e6842316473b.jpg" />
+            <Card.Img variant="top" src={car.imageSrc} alt="user's car picture" />
             <Card.Body>
-                <Card.Title>Card title</Card.Title>
+                <Card.Title>{car.make}</Card.Title>
                 <Card.Text>
-                    This is a wider card with supporting text below as a natural lead-in to
-                    additional content. This content is a little bit longer.
+                    <span>Model: {car.model}</span>
+                    <br />
+                    <span>Seats: {car.passengerCapacity}</span>
                 </Card.Text>
             </Card.Body>
             <Card.Footer>
                 <Row>
                     <Col>
-                        <Button variant="outline-primary">Details</Button>
+                        <Button as={Link} to={{ pathname: `/user/cars/details/${car.id}`, state: { id: car.id } }} variant="outline-primary">Details</Button>
                     </Col>
                     <Col>
                         <div className="favorite-car">

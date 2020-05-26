@@ -1,14 +1,10 @@
-package trippy.domain.entities;
+package trippy.domain.models.view.cars;
 
-import javax.persistence.*;
+public class CarDetailsViewModel {
 
-@Entity
-@Table(name = "cars")
-public class Car extends BaseEntity {
-
+    private String id;
     private String make;
     private String model;
-    private String color;
     private int passengerCapacity;
     private boolean canEat;
     private boolean canDrink;
@@ -16,13 +12,19 @@ public class Car extends BaseEntity {
     private boolean petsAllowed;
     private boolean hasLuggageSpace;
     private boolean hasAirConditioning;
-    private User owner;
-    private Image image;
+    private String imageSrc;
 
-    public Car() {
+    public CarDetailsViewModel() {
     }
 
-    @Column(name = "make")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getMake() {
         return make;
     }
@@ -31,7 +33,6 @@ public class Car extends BaseEntity {
         this.make = make;
     }
 
-    @Column(name = "model")
     public String getModel() {
         return model;
     }
@@ -40,7 +41,6 @@ public class Car extends BaseEntity {
         this.model = model;
     }
 
-    @Column(name = "passenger_capacity")
     public int getPassengerCapacity() {
         return passengerCapacity;
     }
@@ -49,7 +49,6 @@ public class Car extends BaseEntity {
         this.passengerCapacity = passengerCapacity;
     }
 
-    @Column(name = "can_eat")
     public boolean isCanEat() {
         return canEat;
     }
@@ -58,7 +57,6 @@ public class Car extends BaseEntity {
         this.canEat = canEat;
     }
 
-    @Column(name = "can_drink")
     public boolean isCanDrink() {
         return canDrink;
     }
@@ -67,7 +65,6 @@ public class Car extends BaseEntity {
         this.canDrink = canDrink;
     }
 
-    @Column(name = "can_smoke")
     public boolean isCanSmoke() {
         return canSmoke;
     }
@@ -76,7 +73,6 @@ public class Car extends BaseEntity {
         this.canSmoke = canSmoke;
     }
 
-    @Column(name = "pets_allowed")
     public boolean isPetsAllowed() {
         return petsAllowed;
     }
@@ -85,7 +81,6 @@ public class Car extends BaseEntity {
         this.petsAllowed = petsAllowed;
     }
 
-    @Column(name = "has_luggage_space")
     public boolean isHasLuggageSpace() {
         return hasLuggageSpace;
     }
@@ -94,7 +89,6 @@ public class Car extends BaseEntity {
         this.hasLuggageSpace = hasLuggageSpace;
     }
 
-    @Column(name = "has_air_conditioning")
     public boolean isHasAirConditioning() {
         return hasAirConditioning;
     }
@@ -103,31 +97,11 @@ public class Car extends BaseEntity {
         this.hasAirConditioning = hasAirConditioning;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    public User getOwner() {
-        return owner;
+    public String getImageSrc() {
+        return imageSrc;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    @OneToOne
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    @Column(name = "color")
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 }
