@@ -8,7 +8,8 @@ const API_ROOT = "/api/user";
 const END_POINTS = {
     createCar: API_ROOT + "/create-car",
     getUserCars: API_ROOT + "/cars",
-    getCarById: API_ROOT + "/cars/details"
+    getCarById: API_ROOT + "/cars/details",
+    deleteCar: API_ROOT + "/cars/delete"
 };
 
 const userService = {
@@ -22,6 +23,10 @@ const userService = {
 
     getCarById: (id: string): Promise<CarDetailsModel> => {
         return http.post(END_POINTS.getCarById, { id });
+    },
+
+    deleteCar: (id: string): Promise<any> => {
+        return http.del(END_POINTS.deleteCar, { id });
     },
 };
 

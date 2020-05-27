@@ -54,7 +54,7 @@ public class CarCreateBindingModel {
         this.passengerCapacity = passengerCapacity;
     }
 
-    public boolean canEat() {
+    public boolean isCanEat() {
         return canEat;
     }
 
@@ -62,7 +62,7 @@ public class CarCreateBindingModel {
         this.canEat = canEat;
     }
 
-    public boolean canDrink() {
+    public boolean isCanDrink() {
         return canDrink;
     }
 
@@ -70,7 +70,7 @@ public class CarCreateBindingModel {
         this.canDrink = canDrink;
     }
 
-    public boolean canSmoke() {
+    public boolean isCanSmoke() {
         return canSmoke;
     }
 
@@ -86,7 +86,7 @@ public class CarCreateBindingModel {
         this.petsAllowed = petsAllowed;
     }
 
-    public boolean hasLuggageSpace() {
+    public boolean isHasLuggageSpace() {
         return hasLuggageSpace;
     }
 
@@ -94,7 +94,7 @@ public class CarCreateBindingModel {
         this.hasLuggageSpace = hasLuggageSpace;
     }
 
-    public boolean hasAirConditioning() {
+    public boolean isHasAirConditioning() {
         return hasAirConditioning;
     }
 

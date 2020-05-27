@@ -16,6 +16,7 @@ import trippy.services.UserService;
 import javax.security.auth.login.CredentialNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static trippy.util.constants.UserValidationConstants.EMAIL_TAKEN;
 import static trippy.util.constants.UserValidationConstants.USERNAME_TAKEN;

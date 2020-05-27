@@ -3,6 +3,7 @@ package trippy.services.implementations;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import trippy.domain.entities.Car;
+import trippy.domain.entities.User;
 import trippy.domain.models.service.CarServiceModel;
 import trippy.domain.models.service.UserServiceModel;
 import trippy.repositories.CarRepository;
@@ -49,5 +50,10 @@ public class CarServiceImpl implements CarService {
         }
 
         return car;
+    }
+
+    @Override
+    public void deleteCar(String userId, String carId) {
+        this.carRepository.deleteCarForUser(userId, carId);
     }
 }

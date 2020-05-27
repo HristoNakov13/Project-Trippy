@@ -4,6 +4,8 @@ import "./CarCard.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import noImage from "../../../../../static/images/no-image-icon.png";
+
 import CarListModel from "../car-list-interface";
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
 const CarCard: React.FC<Props> = ({ car }) => {
     return <Fragment>
         <Card>
-            <Card.Img variant="top" src={car.imageSrc} alt="user's car picture" />
+            <Card.Img variant="top" src={car.imageSrc ? car.imageSrc : noImage} alt="user's car picture" />
             <Card.Body>
                 <Card.Title>{car.make}</Card.Title>
                 <Card.Text>

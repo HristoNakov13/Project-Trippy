@@ -6,6 +6,7 @@ public class CarDetailsViewModel {
     private String make;
     private String model;
     private int passengerCapacity;
+    private String color;
     private boolean canEat;
     private boolean canDrink;
     private boolean canSmoke;
@@ -103,5 +104,13 @@ public class CarDetailsViewModel {
 
     public void setImageSrc(String imageSrc) {
         this.imageSrc = imageSrc;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

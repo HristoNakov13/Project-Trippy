@@ -66,7 +66,7 @@ const http = {
     get: httpMethod("GET"),
     post: httpMethod("POST"),
     put: httpMethod("PUT"),
-    del: httpMethod("DEL"), 
+    del: httpMethod("DELETE"), 
     formUploadFile,
 };
 

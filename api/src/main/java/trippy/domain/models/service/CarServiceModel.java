@@ -8,6 +8,7 @@ public class CarServiceModel {
     private String make;
     private String model;
     private int passengerCapacity;
+    private String color;
     private boolean canEat;
     private boolean canDrink;
     private boolean canSmoke;
@@ -18,6 +19,14 @@ public class CarServiceModel {
     private Image image;
 
     public CarServiceModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getMake() {
@@ -100,19 +109,19 @@ public class CarServiceModel {
         this.owner = owner;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Image getImage() {
         return image;
     }
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

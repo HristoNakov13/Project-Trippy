@@ -5,12 +5,15 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import trippy.domain.entities.Car;
 import trippy.domain.entities.Image;
+import trippy.domain.entities.User;
 import trippy.domain.models.binding.car.CarCreateBindingModel;
+import trippy.domain.models.binding.car.CarDeleteBindingModel;
 import trippy.domain.models.binding.car.CarGetBindingModel;
 import trippy.domain.models.service.CarServiceModel;
 import trippy.domain.models.view.cars.CarCreatedViewModel;
@@ -118,17 +121,28 @@ public class CarController {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setTitle("Invalid id. No such car exists.");
 
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
 
         return ResponseEntity.ok(this.modelMapper.map(carEntity, CarDetailsViewModel.class));
+    }
+
+    //not sure if its a good idea to return 403 if the sender is not the owner of target car
+    @RequestMapping(method = RequestMethod.DELETE, path = "/cars/delete")
+    public ResponseEntity<?> deleteCar(Authentication authentication, @RequestBody CarDeleteBindingModel carDeleteBindingModel) {
+        User owner = (User) authentication.getPrincipal();
+        this.carService.deleteCar(owner.getId(), carDeleteBindingModel.getId());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //adds TypeMaps to modelMapper
     private void init() {
         Converter<Image, String> imageSrcConverter = (context -> {
             Image img = context.getSource();
-            return imageUtil.getImageSrc(img.getImgCloudService(), img.getPublicId());
+            return img == null
+                    ? ""
+                    : imageUtil.getImageSrc(img.getImgCloudService(), img.getPublicId());
         });
 
         this.modelMapper.createTypeMap(Car.class, CarListViewModel.class)
