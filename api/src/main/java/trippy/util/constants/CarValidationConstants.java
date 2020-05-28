@@ -2,6 +2,8 @@ package trippy.util.constants;
 
 public class CarValidationConstants {
 
+    public static final String INVALID_ID_REQUEST = "Invalid id. No such car exists.";
+
     public static final int MIN_PASSENGER_CAPACITY = 1;
     public static final int MAX_PASSENGER_CAPACITY = 5;
     public static final String MIN_PASSENGERS_INVALID_MSG = "Passenger capacity must be at least "  + MIN_PASSENGER_CAPACITY;

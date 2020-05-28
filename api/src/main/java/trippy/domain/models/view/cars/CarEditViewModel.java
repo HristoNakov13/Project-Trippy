@@ -1,33 +1,19 @@
-package trippy.domain.models.service;
+package trippy.domain.models.view.cars;
 
-import trippy.domain.entities.Image;
-import trippy.domain.entities.User;
+public class CarEditViewModel {
 
-public class CarServiceModel {
-
-    private String id;
     private String make;
     private String model;
-    private int passengerCapacity;
     private String color;
+    private int passengerCapacity;
     private boolean canEat;
     private boolean canDrink;
     private boolean canSmoke;
     private boolean petsAllowed;
     private boolean hasLuggageSpace;
-    private boolean hasAirConditioning;;
-    private UserServiceModel owner;
-    private Image image;
+    private boolean hasAirConditioning;
 
-    public CarServiceModel() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public CarEditViewModel() {
     }
 
     public String getMake() {
@@ -44,6 +30,14 @@ public class CarServiceModel {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public int getPassengerCapacity() {
@@ -100,29 +94,5 @@ public class CarServiceModel {
 
     public void setHasAirConditioning(boolean hasAirConditioning) {
         this.hasAirConditioning = hasAirConditioning;
-    }
-
-    public UserServiceModel getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserServiceModel owner) {
-        this.owner = owner;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 }

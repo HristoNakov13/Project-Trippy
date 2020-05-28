@@ -3,7 +3,6 @@ package trippy.services.implementations;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import trippy.domain.entities.Car;
-import trippy.domain.entities.User;
 import trippy.domain.models.service.CarServiceModel;
 import trippy.domain.models.service.UserServiceModel;
 import trippy.repositories.CarRepository;
@@ -55,5 +54,35 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deleteCar(String userId, String carId) {
         this.carRepository.deleteCarForUser(userId, carId);
+    }
+
+    //currently I think this is best approach for editing entity but still have my doubts
+    //there were few examples of pretty much the same method on stackoverflow and the alternatives were worse
+    @Override
+    public Car editCar(CarServiceModel carServiceModel, String carId) {
+        Car carEntity = this.carRepository.findById(carId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        Car editCar = this.modelMapper.map(carServiceModel, Car.class);
+        editCar.setId(carEntity.getId());
+        editCar.setOwner(carEntity.getOwner());
+
+        //if editCar's image is null that means the user did not pass a new picture
+        //in that case the old image is used again
+        if (editCar.getImage() == null) {
+            editCar.setImage(carEntity.getImage());
+        }
+
+        return this.carRepository.saveAndFlush(editCar);
+    }
+
+    @Override
+    public boolean isCarOwner(String userId, String carId) {
+        Car car = this.carRepository.findById(carId).orElse(null);
+
+        return car != null
+                && car.getOwner()
+                .getId()
+                .equals(userId);
     }
 }

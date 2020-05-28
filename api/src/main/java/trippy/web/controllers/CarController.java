@@ -14,11 +14,10 @@ import trippy.domain.entities.Image;
 import trippy.domain.entities.User;
 import trippy.domain.models.binding.car.CarCreateBindingModel;
 import trippy.domain.models.binding.car.CarDeleteBindingModel;
+import trippy.domain.models.binding.car.CarEditBindingModel;
 import trippy.domain.models.binding.car.CarGetBindingModel;
 import trippy.domain.models.service.CarServiceModel;
-import trippy.domain.models.view.cars.CarCreatedViewModel;
-import trippy.domain.models.view.cars.CarDetailsViewModel;
-import trippy.domain.models.view.cars.CarListViewModel;
+import trippy.domain.models.view.cars.*;
 import trippy.repositories.CarRepository;
 import trippy.services.CarService;
 import trippy.services.ImageService;
@@ -38,9 +37,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static trippy.util.constants.CarValidationConstants.ERROR_RESPONSE_TITLE;
+import static trippy.util.constants.CarValidationConstants.INVALID_ID_REQUEST;
 
 @Controller
-@RequestMapping("/api/user")
+@RequestMapping("/api/user/cars")
 public class CarController {
 
     private final CarService carService;
@@ -92,7 +92,7 @@ public class CarController {
         return new ResponseEntity<>(carCreatedViewModel, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/cars")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getUserCars(Principal principal) {
         Set<Car> cars;
         try {
@@ -112,14 +112,14 @@ public class CarController {
         return ResponseEntity.ok(carViewModels);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/cars/details")
+    @RequestMapping(method = RequestMethod.POST, path = "/details")
     public ResponseEntity<?> getCar(@RequestBody CarGetBindingModel carGetBindingModel) {
         Car carEntity;
         try {
             carEntity = this.carService.getCarById(carGetBindingModel.getId());
         } catch (EntityNotFoundException e) {
             ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setTitle("Invalid id. No such car exists.");
+            errorResponse.setTitle(INVALID_ID_REQUEST);
 
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
@@ -128,10 +128,61 @@ public class CarController {
     }
 
     //not sure if its a good idea to return 403 if the sender is not the owner of target car
-    @RequestMapping(method = RequestMethod.DELETE, path = "/cars/delete")
+    @RequestMapping(method = RequestMethod.DELETE, path = "/delete")
     public ResponseEntity<?> deleteCar(Authentication authentication, @RequestBody CarDeleteBindingModel carDeleteBindingModel) {
         User owner = (User) authentication.getPrincipal();
         this.carService.deleteCar(owner.getId(), carDeleteBindingModel.getId());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/edit/car-data")
+    public ResponseEntity<?> getEditCarData(@RequestBody CarGetBindingModel carGetBindingModel) {
+        Car car;
+        try {
+            car = this.carService.getCarById(carGetBindingModel.getId());
+        } catch (EntityNotFoundException e) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setTitle(INVALID_ID_REQUEST);
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(this.modelMapper.map(car, CarEditViewModel.class));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/edit")
+    public ResponseEntity<?> editCar(@RequestParam(value = "file", required = false) MultipartFile carImage,
+                                     @RequestParam(value = "carData") String carData,
+                                     @RequestParam(value = "carId") String carId,
+                                     Authentication authentication) throws IOException {
+        User user = (User) authentication.getPrincipal();
+        if (!this.carService.isCarOwner(user.getId(), carId)) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setTitle("User is not the car owner.");
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        }
+
+        CarEditBindingModel carEditBindingModel = this.gson.fromJson(carData, CarEditBindingModel.class);
+        carEditBindingModel.setImage(carImage);
+        List<ValidationError> errors = this.validatorUtil.getErrors(carEditBindingModel);
+
+        if (!errors.isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse(ERROR_RESPONSE_TITLE, errors);
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        CarServiceModel toBeEdited = this.modelMapper.map(carEditBindingModel, CarServiceModel.class);
+
+        if (carImage != null) {
+            ImageUploadRes uploadResponse = this.imageUtil.uploadImage(carImage);
+            Image image = this.imageService.saveImage(uploadResponse);
+            toBeEdited.setImage(image);
+        }
+
+        this.carService.editCar(toBeEdited, carId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

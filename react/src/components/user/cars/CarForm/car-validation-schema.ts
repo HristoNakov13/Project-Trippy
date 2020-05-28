@@ -9,7 +9,7 @@ const MAX_MODEL_LENGTH = 30;
 
 
 const MIN_PASSENGER_CAPACITY = 1;
-const MAX_PASSENGER_CAPACITY = 5;
+export const MAX_PASSENGER_CAPACITY = 5;
 
 
 const schema = yup.object({

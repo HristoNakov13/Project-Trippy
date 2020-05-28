@@ -1,5 +1,7 @@
 package trippy.services;
 
+import org.hibernate.event.service.spi.JpaBootstrapSensitive;
+import org.springframework.data.jpa.repository.JpaContext;
 import trippy.domain.entities.Image;
 import trippy.util.images.ImageUploadRes;
 

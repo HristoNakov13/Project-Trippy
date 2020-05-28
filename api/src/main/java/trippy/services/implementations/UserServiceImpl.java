@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
      * @param password {@code String} the user's password.
      * @return {@code String} encoded password.
      */
-    private String encodePassword (String password){
+    private String encodePassword(String password) {
         return this.bCryptPasswordEncoder.encode(password);
     }
 

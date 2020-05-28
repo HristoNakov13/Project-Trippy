@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import "./CarDetails.css";
 
-import { useLocation, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { Card, Row, Col, Button } from "react-bootstrap";
 
 import noImage from "../../../../static/images/no-image-icon.png";
@@ -11,18 +11,17 @@ import carService from "../../../../services/car-service";
 
 const CarDetails: React.FC = () => {
     const [car, setCar] = useState({} as CarDetailsModel);
-    const location: any = useLocation();
+    const { id } = useParams();
     const history = useHistory();
 
     useEffect(() => {
-        const id = location?.state?.id;
-        carService.getCarById(id)
+        carService.getCarDetails(id)
             .then((res: CarDetailsModel) => {
                 setCar(res);
             }).catch(() => {
                 history.push("/not-found");
             })
-    }, []);
+    }, [history, id]);
 
     const handleDeleteCar = () => {
         carService.deleteCar(car.id)
@@ -84,10 +83,10 @@ const CarDetails: React.FC = () => {
                 </Row>
                 <Row className="justify-content-center">
                     <Col className="btn-wrapper">
-                        <Button variant="success">Edit</Button>
+                        <Button as={Link} to={`/user/cars/edit-car/${car.id}`} variant="success"><i className="fas fa-edit"></i> Edit</Button>
                     </Col>
                     <Col className="btn-wrapper">
-                        <Button variant="danger" onClick={handleDeleteCar}>Delete</Button>
+                        <Button variant="danger" onClick={handleDeleteCar}><i className="fas fa-trash-alt"></i> Delete</Button>
                     </Col>
                 </Row>
             </Card.Text>

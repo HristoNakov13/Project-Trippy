@@ -1,26 +1,34 @@
 import React, { useState } from "react";
 import "./CreateCar.css";
 
-import { Formik, Field } from "formik";
-
-import { Form, Col, Row, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-
+import CarForm from "../CarForm/CarForm";
 import Car from "../car-interface";
+import { OnSubmit, ImageChangeHandler } from "../CarForm/form-func-interfaces";
 import carService from "../../../../services/car-service";
-import schema from "./car-validation-schema";
 import serverValidationErrors from "../../../../shared/errorhandler/server-validation-error-handler";
 
 const CreateCar: React.FC = () => {
     const [carImage, setCarImage] = useState("");
     const history = useHistory();
+    const initialValues: Car = {
+        make: "",
+        model: "",
+        passengerCapacity: -1,
+        hasAirConditioning: false,
+        hasLuggageSpace: false,
+        canEat: false,
+        canDrink: false,
+        canSmoke: false,
+        petsAllowed: false,
+    };
 
-    const fileOnChange = (event: any) => {
+    const imageChangeHandler: ImageChangeHandler = (event: any): void => {
         setCarImage(event.target.files[0]);
     };
 
-    const onSubmit = (carData: Car, { setErrors }: any) => {
+    const onSubmit: OnSubmit = (carData: Car, { setErrors }: any): void => {
         const formData = new FormData();
 
         if (!!carImage) {
@@ -38,136 +46,12 @@ const CreateCar: React.FC = () => {
             });
     };
 
-    return (
-        <Formik
-            onSubmit={onSubmit}
-            validationSchema={schema}
-            initialValues={{
-                make: "",
-                model: "",
-                passengerCapacity: -1,
-                hasAirConditioning: false,
-                hasLuggageSpace: false,
-                canEat: false,
-                canDrink: false,
-                canSmoke: false,
-                petsAllowed: false,
-            }}
-        >
-            {({
-                handleChange,
-                handleSubmit,
-                handleBlur,
-                touched,
-                values,
-                errors,
-            }) => (
-                    <Form onSubmit={handleSubmit}>
-                        <h1 className="form-title">Create car</h1>
-                        <Form.Row className="justify-content-md-auto">
-                            <Form.Group as={Col} controlId="make">
-                                <Form.Label>Make*</Form.Label>
-                                <Field as={Form.Control} type="text" name="make" isInvalid={touched.make && !!errors.make} />
-
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.make}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="model">
-                                <Form.Label>Model*</Form.Label>
-                                <Field as={Form.Control} type="text" name="model" isInvalid={touched.model && !!errors.model} />
-
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.model}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                        </Form.Row>
-
-                        <Form.Group controlId="color">
-                            <Form.Label>Color</Form.Label>
-                            <Field as={Form.Control} type="text" name="color" />
-                        </Form.Group>
-
-                        <Form.Group controlId="available-seats">
-                            <Form.Label>Number of seats*</Form.Label>
-                            <Form.Control as="select" onChange={handleChange} onBlur={handleBlur} name="passengerCapacity" isInvalid={touched.passengerCapacity && !!errors.passengerCapacity}>
-                                <option selected disabled>Passanger capacity...</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                            </Form.Control>
-                            <Form.Control.Feedback type="invalid">
-                                {errors.passengerCapacity}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <span className="checkbox-group-label">Allowed items and activities:</span>
-                        <Form.Row className="mb-3">
-                            <Col>
-                                <Row>
-                                    <Col className="col-12 col-lg-6">
-                                        <div className="form-check">
-                                            <Field className="form-check-input" type="checkbox" id="food" name="canEat" />
-                                            <label className="form-check-label" htmlFor="food"><i className="fas fa-utensils"></i>  Food</label>
-                                        </div>
-                                    </Col>
-                                    <Col className="col-12 col-lg-6">
-                                        <div className="form-check">
-                                            <Field className="form-check-input" type="checkbox" id="drinks" name="canDrink" />
-                                            <label className="form-check-label" htmlFor="drinks"><i className="fas fa-wine-bottle"></i> Drinks</label>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col className="col-12 col-lg-6">
-                                        <div className="form-check">
-                                            <Field className="form-check-input" type="checkbox" id="pets" name="petsAllowed" />
-                                            <label className="form-check-label" htmlFor="pets"><i className="fas fa-paw"></i> Pets</label>
-                                        </div>
-
-                                    </Col>
-                                    <Col className="col-12 col-lg-6">
-                                        <div className="form-check">
-                                            <Field className="form-check-input" type="checkbox" id="smoking" name="canSmoke" />
-                                            <label className="form-check-label" htmlFor="smoking"><i className="fas fa-smoking"></i> Smoking</label>
-                                        </div>
-
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Form.Row>
-                        <span className="checkbox-group-label">Car features:</span>
-                        <Form.Row className="mb-3">
-                            <Col>
-                                <Row>
-                                    <Col className="col-12 col-lg-6">
-                                        <div className="form-check">
-                                            <Field className="form-check-input" type="checkbox" id="AC" name="hasAirConditioning" />
-                                            <label className="form-check-label" htmlFor="AC"><i className="fas fa-snowflake"></i> Air Conditioning</label>
-                                        </div>
-                                    </Col>
-                                    <Col className="col-12 col-lg-6">
-                                        <div className="form-check">
-                                            <Field className="form-check-input" type="checkbox" id="luggage" name="hasLuggageSpace" />
-                                            <label className="form-check-label" htmlFor="luggage"><i className="fas fa-suitcase"></i> Luggage space</label>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Form.Row>
-                        <Form.File id="formcheck-api-regular">
-                            <Form.File.Label>Car picture</Form.File.Label>
-                            <Form.File.Input onChange={fileOnChange} />
-                        </Form.File>
-                        <div className="button-wrap">
-                            <Button type="submit" variant="warning">Create Car</Button>
-                        </div>
-                    </Form>
-                )}
-        </Formik>
-    );
+    return <CarForm
+        onSubmit={onSubmit}
+        imageChangeHandler={imageChangeHandler}
+        initialValues={initialValues}
+        formName="Create Car"
+    />
 };
 
 export default CreateCar;

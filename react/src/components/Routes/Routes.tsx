@@ -14,6 +14,9 @@ import CreateCar from "../user/cars/CreateCar/CreateCar";
 import MyCars from "../user/cars/MyCars/MyCars";
 import CarDetails from "../user/cars/CarDetails/CarDetails";
 import NotFound from "../errors/NotFound/NotFound";
+import EditCar from "../user/cars/EditCar/EditCar";
+
+import CreateTrip from "../user/trips/TripForm/TripForm";
 
 interface Props {
     isLoggedIn: boolean,
@@ -31,8 +34,10 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <Route path="/login" exact component={isLoggedIn ? Home : LogIn} />
                 <Route path="/user/cars" exact component={MyCars} />
                 <Route path="/user/cars/create-car" exact component={CreateCar} />
-                <Route path="/user/cars/details/" component={CarDetails} />
+                <Route path="/user/cars/edit-car/:id" component={EditCar} />
+                <Route path="/user/cars/details/:id" component={CarDetails} />
                 <Route path="/not-found" exact component={NotFound} />
+                <Route path="/user/trips/create" exact component={CreateTrip} />
             </Switch>
         </Fragment>
     );

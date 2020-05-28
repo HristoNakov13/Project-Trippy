@@ -27,7 +27,7 @@ const CarCard: React.FC<Props> = ({ car }) => {
             <Card.Footer>
                 <Row>
                     <Col>
-                        <Button as={Link} to={{ pathname: `/user/cars/details/${car.id}`, state: { id: car.id } }} variant="outline-primary">Details</Button>
+                        <Button as={Link} to={`/user/cars/details/${car.id}`} variant="outline-primary">Details</Button>
                     </Col>
                     <Col>
                         <div className="favorite-car">

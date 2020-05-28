@@ -36,8 +36,8 @@ const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
                     <Navbar.Collapse id="responsive-navbar-nav" className="w-100">
                         <Nav className="navbar-nav w-100 justify-content-center">
                             <NavDropdown title="Trips" id="trips-dropdown">
-                                <NavDropdown.Item as={Link} to="/trips/search"><i className="fas fa-search" /> Search</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/trips/create"><i className="fas fa-plus"></i> Create</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/user/trips/search"><i className="fas fa-search" /> Search</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/user/trips/create"><i className="fas fa-plus"></i> Create</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item as={Link} to="/profile/my-trips"><i className="fas fa-history"></i> History</NavDropdown.Item>
                             </NavDropdown>
