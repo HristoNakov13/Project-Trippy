@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import trippy.util.cookies.CookieUtil;
 import trippy.util.cookies.CookieUtilImpl;
+import trippy.util.files.FileUtil;
+import trippy.util.files.FileUtilImpl;
 import trippy.util.images.ImageUtil;
 import trippy.util.images.ImageUtilImpl;
 import trippy.util.validator.ValidatorUtil;
@@ -38,6 +40,11 @@ public class AppBeanConfiguration {
     @Bean
     public ImageUtil imageUtil() {
         return new ImageUtilImpl();
+    }
+
+    @Bean
+    public FileUtil fileUtil() {
+        return new FileUtilImpl();
     }
 
     @Bean

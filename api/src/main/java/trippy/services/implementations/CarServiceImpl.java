@@ -10,6 +10,7 @@ import trippy.services.CarService;
 import trippy.services.UserService;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -84,5 +85,10 @@ public class CarServiceImpl implements CarService {
                 && car.getOwner()
                 .getId()
                 .equals(userId);
+    }
+
+    @Override
+    public List<Car> getAllUserCars(String userId) {
+        return this.carRepository.getAllCarsForUser(userId);
     }
 }

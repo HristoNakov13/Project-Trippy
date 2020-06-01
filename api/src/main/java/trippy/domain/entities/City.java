@@ -19,6 +19,7 @@ public class City {
         this.id = id;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }

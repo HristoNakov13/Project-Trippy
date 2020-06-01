@@ -6,6 +6,7 @@ import trippy.domain.models.binding.car.CarEditBindingModel;
 import trippy.domain.models.service.CarServiceModel;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 public interface CarService {
 
@@ -39,5 +40,21 @@ public interface CarService {
      */
     Car editCar(CarServiceModel editCar, String carId);
 
+    /**
+     * Checks if a {@link Car} belongs to a particular {@code User}.
+     *
+     * @param userId {@code String} the identifier of the {@link User} entity.
+     * @param carId {@code String} the identifier of the {@link Car} entity.
+     * @return {@code boolean} whether the user is owner or not.
+     */
     boolean isCarOwner(String userId, String carId);
+
+
+    /**
+     * Fetches all {@link Car}s belonging to the given user.
+     *
+     * @param userId {@code String} the identifier of the {@link User} entity.
+     * @return {@link List<Car>} all the {@link Car} belonging to the given user.
+     */
+    List<Car> getAllUserCars(String userId);
 }
