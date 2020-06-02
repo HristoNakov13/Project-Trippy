@@ -16,16 +16,14 @@ import CarDetails from "../user/cars/CarDetails/CarDetails";
 import NotFound from "../errors/NotFound/NotFound";
 import EditCar from "../user/cars/EditCar/EditCar";
 
-import CreateTrip from "../user/trips/TripForm/TripForm";
+import CreateTrip from "../user/trips/CreateTrip/CreateTrip";
 
 interface Props {
     isLoggedIn: boolean,
     user: UserLogged,
 }
 
-
 const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
-    console.log(isLoggedIn);
     return (
         <Fragment>
             <Switch>
