@@ -1,4 +1,4 @@
-# Project-Trippy
+# Trippy
 App for shared travel
 
 # Front-end:
