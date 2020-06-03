@@ -2,7 +2,7 @@
 App for shared travel
 
 # Front-end:
-React client bootstrapped with create-react-app.
+React client with TypeScript bootstrapped with create-react-app.
   
 Third party libraries:
 <br/>
@@ -10,8 +10,14 @@ Validation - [yup](https://github.com/jquense/yup)
 <br/>
 Form control - [Formik](https://github.com/jaredpalmer/formik)
 <br/>
-Routing - [React-router](https://github.com/ReactTraining/react-router)
+Routing - [react-router](https://github.com/ReactTraining/react-router)
+<br/>
+Dates - [react-datepicker](https://github.com/Hacker0x01/react-datepicker)
 <br/>
 
-
-
+# Back-end:
+Java API
+<br/>
+Framekwork - Spring
+<br/>
+DB - MySQL
