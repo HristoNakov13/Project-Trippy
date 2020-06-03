@@ -16,6 +16,7 @@ import trippy.domain.entities.Trip;
 import trippy.domain.entities.User;
 import trippy.domain.models.binding.trip.TripCreateBindingModel;
 import trippy.domain.models.view.cars.CarCreateTripViewModel;
+import trippy.domain.models.view.trips.mytrips.TripMyTripsViewModel;
 import trippy.services.CarService;
 import trippy.services.CityService;
 import trippy.services.TripService;
@@ -26,7 +27,10 @@ import trippy.util.validator.ValidatorUtil;
 import trippy.web.responses.CreateTripFormData;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -91,8 +95,20 @@ public class TripController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/my-trips")
+    public ResponseEntity<List<TripMyTripsViewModel>> getUserTrips(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        List<TripMyTripsViewModel> trips = this.tripService.getUserTrips(user.getId())
+                .stream()
+                .map(trip -> this.modelMapper.map(trip, TripMyTripsViewModel.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(trips);
+    }
+
     //adds type mappings
     private void init() {
+        //trip create
         Converter<String, City> cityFetch = new Converter<String, City>() {
             @Override
             public City convert(MappingContext<String, City> context) {
@@ -116,5 +132,42 @@ public class TripController {
                         mapping.using(cityFetch).map(TripCreateBindingModel::getTo, Trip::setTo))
                 .addMappings(mapping ->
                         mapping.using(carFetch).map(TripCreateBindingModel::getCar, Trip::setCar));
+
+        //my trips view model
+
+        Converter<LocalDateTime, String> extractDate = new Converter<LocalDateTime, String>() {
+            @Override
+            public String convert(MappingContext<LocalDateTime, String> context) {
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+                return context.getSource()
+                        .format(formatter);
+            }
+        };
+
+        Converter<LocalDateTime, String> extractTime = new Converter<LocalDateTime, String>() {
+            @Override
+            public String convert(MappingContext<LocalDateTime, String> context) {
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
+
+                return context.getSource()
+                        .format(formatter);
+            }
+        };
+
+        Converter<Set<User>, Integer> seatsTakenConverter = new Converter<Set<User>, Integer>() {
+            @Override
+            public Integer convert(MappingContext<Set<User>, Integer> context) {
+                return context.getSource().size();
+            }
+        };
+
+        this.modelMapper.createTypeMap(Trip.class, TripMyTripsViewModel.class)
+                .addMappings(mapping ->
+                        mapping.using(extractDate).map(Trip::getDepartureDate, TripMyTripsViewModel::setDepartureDate))
+                .addMappings(mapping ->
+                        mapping.using(extractTime).map(Trip::getDepartureDate, TripMyTripsViewModel::setDepartureTime))
+                .addMappings(mapping ->
+                        mapping.using(seatsTakenConverter).map(Trip::getPassengers, TripMyTripsViewModel::setSeatsTaken));
     }
 }

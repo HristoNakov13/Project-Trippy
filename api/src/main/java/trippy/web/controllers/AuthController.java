@@ -16,7 +16,7 @@ import trippy.domain.models.binding.auth.UserSignUpBindingModel;
 import trippy.domain.models.binding.auth.availabilitycheck.EmailCheckBindingModel;
 import trippy.domain.models.binding.auth.availabilitycheck.UsernameCheckBindingModel;
 import trippy.domain.models.service.UserServiceModel;
-import trippy.domain.models.view.UserLoggedViewModel;
+import trippy.domain.models.view.users.UserLoggedViewModel;
 import trippy.services.UserService;
 import trippy.util.cookies.CookieUtil;
 import trippy.util.constants.UserAuthConstants;

@@ -5,6 +5,9 @@ import trippy.domain.entities.Trip;
 import trippy.repositories.TripRepository;
 import trippy.services.TripService;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+
 @Service
 public class TripServiceImpl implements TripService {
 
@@ -17,5 +20,10 @@ public class TripServiceImpl implements TripService {
     @Override
     public void createTrip(Trip trip) {
         this.tripRepository.saveAndFlush(trip);
+    }
+
+    @Override
+    public List<Trip> getUserTrips(String userId) {
+        return this.tripRepository.getUserTrips(userId);
     }
 }
