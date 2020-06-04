@@ -1,7 +1,7 @@
 .site-links {
-    /* display: flex;
+    display: flex;
     width: 100%;
-    justify-content: center; */
+    justify-content: center;
     margin-top: 4em;
     font-size: 1.1em;
 }
@@ -16,7 +16,7 @@
     color: rgb(255, 255, 255);
 }
 
-.site-links .footer-link:nth-child(n+2)::before {
+.footer-link:nth-child(n+2)::before {
     content: '';
     display: inline-block;
     height: 10px;
@@ -31,11 +31,6 @@
     font-size: 0.9em;
     padding: 0.5em;
     color: rgb(255, 255, 255, 0.3);
-}
-
-.footer-legal:hover {
-    color: rgb(255, 255, 255);
-    transition: color 0.3s ease-in-out;
 }
 
 .footer-social {

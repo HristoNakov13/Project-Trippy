@@ -15,4 +15,12 @@ public interface TripService {
      * @return {@link List<Trip>} every trip created by the user.
      */
     List<Trip> getUserTrips(String userId);
+
+    /**
+     * Fetches {@link Trip} by its id.
+     *
+     * @param tripId id of the {@link Trip}
+     * @return {@link Trip} with the given id.
+     */
+    Trip getTripById(String tripId);
 }

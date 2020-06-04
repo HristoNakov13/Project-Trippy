@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useMemo, useContext } from "react";
 import "./Header.css";
 
 import { NavDropdown, Navbar, Nav } from "react-bootstrap";
@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import logo from "../../static/images/test-logo.png";
 import LoggedUser from "../auth/LogIn/logged-user-interface";
 
-import authService from "../../services/auth-service";
+import { UserContext } from "../../contexts/user/UserContext";
 
 interface Props {
     isLoggedIn: boolean,
@@ -14,9 +14,11 @@ interface Props {
 }
 
 const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
+    const { logout } = useContext(UserContext);
     const history = useHistory();
+
     const handleLogOut = useMemo(() => (() => {
-        authService.loguout()
+        logout()
             .finally(() => {
                 history.push("/");
             });
@@ -42,18 +44,20 @@ const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
                                 <NavDropdown.Item as={Link} to="/profile/my-trips"><i className="fas fa-history"></i> History</NavDropdown.Item>
                             </NavDropdown>
                             <Link to="/about" className="nav-link">About</Link>
-                            <Link to="/about" className="nav-link">About</Link>
+                            <Link to="/contacts" className="nav-link">Contacts</Link>
                         </Nav>
                         <Nav className="nav navbar-nav ml-auto w-100 justify-content-end">
-                            <Link to="/login" className="nav-link auth login">Log In</Link>
-                            <Link to="/sign-up" className="nav-link auth sign-up">Sign Up</Link>
-                            <NavDropdown alignRight title="MyAccount123" id="account-controll-drpdown">
-                                <NavDropdown.Item as={Link} to="/user/trips"><i className="fas fa-map-marked-alt" /> My Trips</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/user/cars"><i className="fas fa-car" /> My Cars</NavDropdown.Item>
-                                <NavDropdown.Item as={Link} to="/user/settings"><i className="fas fa-cog" /> Settings</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item as={Link} onClick={handleLogOut} to="/logout" ><i className="fas fa-sign-out-alt" /> Logout</NavDropdown.Item>
-                            </NavDropdown>
+                            {isLoggedIn
+                                ? (<Fragment><NavDropdown alignRight title={user && user.username} id="account-controll-drpdown">
+                                    <NavDropdown.Item as={Link} to="/user/trips"><i className="fas fa-map-marked-alt" /> My Trips</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/user/cars"><i className="fas fa-car" /> My Cars</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/user/settings"><i className="fas fa-cog" /> Settings</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item as={Link} onClick={handleLogOut} to="/logout"><i className="fas fa-sign-out-alt" /> Logout</NavDropdown.Item>
+                                </NavDropdown></Fragment>)
+                                : (<Fragment><Link to="/login" className="nav-link auth login">Log In</Link>
+                                    <Link to="/sign-up" className="nav-link auth sign-up">Sign Up</Link></Fragment>)
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import trippy.domain.entities.Car;
 import trippy.domain.entities.City;
 import trippy.domain.entities.Trip;
@@ -17,6 +15,7 @@ import trippy.domain.entities.User;
 import trippy.domain.models.binding.trip.TripCreateBindingModel;
 import trippy.domain.models.view.cars.CarCreateTripViewModel;
 import trippy.domain.models.view.trips.mytrips.TripMyTripsViewModel;
+import trippy.domain.models.view.trips.tripdetails.TripDetailsViewModel;
 import trippy.services.CarService;
 import trippy.services.CityService;
 import trippy.services.TripService;
@@ -106,6 +105,20 @@ public class TripController {
         return ResponseEntity.ok(trips);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/details/{id}")
+    public ResponseEntity<?> tripDetails(@PathVariable("id") String tripId) {
+        Trip trip;
+        try {
+            trip = this.tripService.getTripById(tripId);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        TripDetailsViewModel tripDetailsViewModel = this.modelMapper.map(trip, TripDetailsViewModel.class);
+
+        return ResponseEntity.ok(tripDetailsViewModel);
+    }
+
     //adds type mappings
     private void init() {
         //trip create
@@ -169,5 +182,15 @@ public class TripController {
                         mapping.using(extractTime).map(Trip::getDepartureDate, TripMyTripsViewModel::setDepartureTime))
                 .addMappings(mapping ->
                         mapping.using(seatsTakenConverter).map(Trip::getPassengers, TripMyTripsViewModel::setSeatsTaken));
+
+        //trip details
+
+        this.modelMapper.createTypeMap(Trip.class, TripDetailsViewModel.class)
+                .addMappings(mapping ->
+                        mapping.using(extractDate).map(Trip::getDepartureDate, TripDetailsViewModel::setDepartureDate))
+                .addMappings(mapping ->
+                        mapping.using(extractTime).map(Trip::getDepartureDate, TripDetailsViewModel::setDepartureTime))
+                .addMappings(mapping ->
+                        mapping.using(seatsTakenConverter).map(Trip::getPassengers, TripDetailsViewModel::setSeatsTaken));
     }
 }

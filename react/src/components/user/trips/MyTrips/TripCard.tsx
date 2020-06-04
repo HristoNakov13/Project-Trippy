@@ -9,53 +9,45 @@ interface Props {
 }
 
 const TripCard: React.FC<Props> = ({ tripData }) => {
-    return <Card>
+    return <Card className="mb-3">
         <Card.Body>
             <Row>
-                <Col className="col-md-5 col-xl-3 col-lg-4 mb-3 mb-md-0">
-                    <div className="d-flex flex-row justify-content-center">
-                        {/* <img alt="driver's picture" /> */}
-                    </div>
-                    <div className="d-flex flex-row justify-content-center">
-                        <span className="text-md-center">{tripData.driver.username}</span>
-                    </div>
-                </Col>
                 <Col className="col-md-7 col-xl-9 col-lg-8">
                     <Row>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-map-marker-alt"></i>
-                            <span className="text-muted"> From: </span>
+                            <span className="card-feature-title"> From: </span>
                             <span>{tripData.from.name}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-map-marker-alt"></i>
-                            <span className="text-muted"> To: </span>
+                            <span className="card-feature-title"> To: </span>
                             <span>{tripData.to.name}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-calendar-alt"></i>
-                            <span className="text-muted"> Date: </span>
+                            <span className="card-feature-title"> Date: </span>
                             <span>{tripData.departureDate}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="far fa-clock"></i>
-                            <span className="text-muted"> Time: </span>
+                            <span className="card-feature-title"> Time: </span>
                             <span className="align-top">{tripData.departureTime}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-car"></i>
-                            <span className="text-muted"> Car: </span>
+                            <span className="card-feature-title"> Car: </span>
                             <span>{tripData.car.make}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-users"></i>
-                            <span className="text-muted"> Seats: </span>
+                            <span className="card-feature-title"> Seats: </span>
                             <span>{tripData.seatsTaken} out of {tripData.car.passengerCapacity}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-tags"></i>
-                            <span className="text-muted"> Price: </span>
-                            <span>{tripData.pricePerPerson} lv</span>
+                            <span className="card-feature-title"> Price: </span>
+                            <span>{tripData.pricePerPerson} lv.</span>
                         </Col>
                     </Row>
                 </Col>

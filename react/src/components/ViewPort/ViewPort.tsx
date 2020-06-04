@@ -15,7 +15,7 @@ const ViewPort: React.FC = () => {
             <Main>
                 <Routes isLoggedIn={isLoggedIn} user={user} />
             </Main>
-            {/* <Footer /> */}
+            <Footer />
         </div>
     )
 };

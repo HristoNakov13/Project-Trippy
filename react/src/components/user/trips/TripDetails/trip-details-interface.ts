@@ -2,11 +2,20 @@ interface CarTripDetails {
     id: string,
     make: string,
     model: string,
+    color: string,
+    imageSrc: string,
+    passengerCapacity: number,
+    canEat: boolean,
+    canDrink: boolean,
+    canSmoke: boolean,
+    petsAllowed: boolean,
+    hasLuggageSpace: boolean,
+    hasAirConditioning: boolean,
 }
 
 interface DriverTripDetails {
     id: string,
-    username:string,
+    username: string,
 }
 
 interface CityTripDetails {
@@ -14,7 +23,7 @@ interface CityTripDetails {
 }
 
 
-interface TripDetails {
+interface TripDetailsModel {
     id: string,
     driver: DriverTripDetails,
     car: CarTripDetails,
@@ -27,4 +36,4 @@ interface TripDetails {
     additionalInfo: string,
 }
 
-export default TripDetails;
+export default TripDetailsModel;

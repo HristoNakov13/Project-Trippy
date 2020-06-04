@@ -121,6 +121,8 @@ public class AuthController {
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse res) {
         Cookie jwtCookie = new Cookie(JWT_COOKIE_NAME, "");
         jwtCookie.setMaxAge(0);
+        jwtCookie.setValue(null);
+        jwtCookie.setPath("/");
 
         res.setHeader("Access-Control-Allow-Credentials", "true");
         res.addCookie(jwtCookie);

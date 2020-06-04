@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import { UserContext } from "../../contexts/user/UserContext";
 import UserLogged from "../auth/LogIn/logged-user-interface";
@@ -35,19 +35,26 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <Route path="/not-found" exact component={NotFound} />
 
 
-                <Route path="/sign-up" exact component={isLoggedIn ? Home : SignUp} />
-                <Route path="/login" exact component={isLoggedIn ? Home : LogIn} />
+                <Route path="/sign-up" exact render={() => (
+                    isLoggedIn
+                        ? <Redirect to="/" /> 
+                        : <SignUp />
+                )} />
+                <Route path="/login" exact render={() => (
+                    isLoggedIn
+                        ? <Redirect to="/" /> 
+                        : <LogIn />
+                )} />
+
+                <PrivateRoute path="/user/cars" isLoggedIn={isLoggedIn} component={MyCars} />
+                <PrivateRoute path="/user/cars/create-car" isLoggedIn={isLoggedIn} component={CreateCar} />
+                <PrivateRoute path="/user/cars/edit-car/" param="id" isLoggedIn={isLoggedIn} component={EditCar} />
+                <PrivateRoute path="/user/cars/details/" param="id" isLoggedIn={isLoggedIn} component={CarDetails} />
 
 
-                <Route path="/user/cars" exact component={MyCars} />
-                <Route path="/user/cars/create-car" exact component={CreateCar} />
-                <Route path="/user/cars/edit-car/:id" component={EditCar} />
-                <Route path="/user/cars/details/:id" component={CarDetails} />
-                
-
-                <Route path="/user/trips/create" exact component={CreateTrip} />
-                <Route path="/user/trips" exact component={MyTrips} />
-                <Route path="/trips/details/:id" component={TripDetails} />
+                <PrivateRoute path="/user/trips/create" isLoggedIn={isLoggedIn} component={CreateTrip} />
+                <PrivateRoute path="/user/trips" isLoggedIn={isLoggedIn} component={CreateTrip} />
+                <PrivateRoute path="/trips/details/" param="id" isLoggedIn={isLoggedIn} isExactPath={false} component={TripDetails} />
             </Switch>
         </Fragment>
     );

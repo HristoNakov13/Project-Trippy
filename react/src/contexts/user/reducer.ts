@@ -13,7 +13,11 @@ const reducer = (state: any, action: Action) => {
             };
         case actions.authFailure:
             return {
-                users: null
+                users: action.payload
+            }
+        case actions.logout:
+            return {
+                users: action.payload
             }
         default:
             return state;

@@ -13,7 +13,7 @@ import { socialLinks } from "../../shared/constants/constants";
 
 const Footer: React.FC = () => {
     return (
-        <footer>
+        <footer className="site-footer">
             <div className="site-links">
                 <Row className="justify-content-md-center">
                     <Col md="auto">

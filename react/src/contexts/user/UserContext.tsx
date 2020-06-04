@@ -22,14 +22,23 @@ const UserContextProvider: React.FC = ({ children }) => {
     const auth = () => {
         authService.auth()
             .then((userData: LoggedUser) => {
-                dispatch({type: actions.authSuccess, payload: userData});
+                dispatch({ type: actions.authSuccess, payload: userData });
             })
             .catch(() => {
-                dispatch({type: actions.authFailure, payload: null});
+                dispatch({ type: actions.authFailure, payload: null });
             });
     };
 
     const isLoggedIn: boolean = useMemo(() => !!state.user, [state.user]);
+
+    const logout = () => {
+        return authService.loguout()
+            .then(res => {
+                dispatch({type: actions.logout, payload: null});
+
+                return res;
+            });
+    };
 
     return (
         <UserContext.Provider
@@ -38,7 +47,8 @@ const UserContextProvider: React.FC = ({ children }) => {
                     login,
                     user: state.user,
                     isLoggedIn,
-                    auth
+                    auth,
+                    logout,
                 }}
         >
             {children}

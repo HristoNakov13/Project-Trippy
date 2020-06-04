@@ -26,4 +26,14 @@ public class TripServiceImpl implements TripService {
     public List<Trip> getUserTrips(String userId) {
         return this.tripRepository.getUserTrips(userId);
     }
+
+    @Override
+    public Trip getTripById(String tripId) {
+        if (tripId == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return this.tripRepository.findById(tripId)
+                .orElseThrow(EntityNotFoundException::new);
+    }
 }
