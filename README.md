@@ -26,4 +26,4 @@ DB - MySQL
 <br/>
 
 # Services:
-[Cloudinary](https://cloudinary.com/)
+Image storage - [Cloudinary](https://cloudinary.com/)
