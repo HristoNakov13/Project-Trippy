@@ -23,3 +23,7 @@ Java API
 Framekwork - Spring
 <br/>
 DB - MySQL
+<br/>
+
+# Services:
+Image storage - [Cloudinary](https://cloudinary.com/)
