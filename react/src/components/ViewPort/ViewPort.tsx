@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
-import Header from "../Navigation/Header"
-import Footer from "../Navigation/Footer"
+import Header from "../navigation/Header"
+import Footer from "../navigation/Footer"
 import Main from "../Main/Main"
-import Routes from "../Routes/Routes";
+import Routes from "../routes/Routes";
 
 import { UserContext } from "../../contexts/user/UserContext";
 

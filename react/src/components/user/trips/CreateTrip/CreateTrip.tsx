@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import { Form, Button, Col, InputGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 

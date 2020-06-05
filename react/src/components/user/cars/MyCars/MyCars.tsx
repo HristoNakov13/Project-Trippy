@@ -12,10 +12,7 @@ const MyCars: React.FC = () => {
     const [cars, setCars] = useState([] as Array<CarListModel>);
     useEffect(() => {
         carService.getUserCars()
-            .then(res => {
-                console.log(res);
-                setCars(res);
-            })
+            .then(setCars)
             .catch(console.error);
     }, []);
     return <Fragment>

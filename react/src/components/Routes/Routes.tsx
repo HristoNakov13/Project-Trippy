@@ -1,7 +1,6 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import { UserContext } from "../../contexts/user/UserContext";
 import UserLogged from "../auth/LogIn/logged-user-interface";
 
 import PrivateRoute from "./PrivateRoute";
@@ -37,23 +36,52 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
 
                 <Route path="/sign-up" exact render={() => (
                     isLoggedIn
-                        ? <Redirect to="/" /> 
+                        ? <Redirect to="/" />
                         : <SignUp />
                 )} />
+
                 <Route path="/login" exact render={() => (
                     isLoggedIn
-                        ? <Redirect to="/" /> 
+                        ? <Redirect to="/" />
                         : <LogIn />
                 )} />
 
-                <PrivateRoute path="/user/cars" isLoggedIn={isLoggedIn} component={MyCars} />
-                <PrivateRoute path="/user/cars/create-car" isLoggedIn={isLoggedIn} component={CreateCar} />
-                <PrivateRoute path="/user/cars/edit-car/" param="id" isLoggedIn={isLoggedIn} component={EditCar} />
-                <PrivateRoute path="/user/cars/details/" param="id" isLoggedIn={isLoggedIn} component={CarDetails} />
+                <Route path="/account-recovery" exact render={() => (
+                    isLoggedIn
+                        ? <Redirect to="/" />
+                        : <Recovery />
+                )} />
+
+                {/* for some reason PrivateRoute switching from url to url bugs when the root url is similar and its not due to "exact" or "param" props mishandling */}
+                {/* going with render to hide the car routes at this point */}
+
+                <Route path="/user/cars" exact render={() => (
+                    isLoggedIn
+                        ? <MyCars />
+                        : <Redirect to="/" />
+                )} />
+
+                <Route path="/user/cars/create-car" exact render={() => (
+                    isLoggedIn
+                        ? <CreateCar />
+                        : <Redirect to="/" />
+                )} />
+
+                <Route path="/user/cars/edit-car/:id" render={() => (
+                    isLoggedIn
+                        ? <EditCar />
+                        : <Redirect to="/" />
+                )} />
+
+                <Route path="/user/cars/details/:id" render={() => (
+                    isLoggedIn
+                        ? <CarDetails />
+                        : <Redirect to="/" />
+                )} />
 
 
                 <PrivateRoute path="/user/trips/create" isLoggedIn={isLoggedIn} component={CreateTrip} />
-                <PrivateRoute path="/user/trips" isLoggedIn={isLoggedIn} component={CreateTrip} />
+                <PrivateRoute path="/user/trips" isLoggedIn={isLoggedIn} component={MyTrips} />
                 <PrivateRoute path="/trips/details/" param="id" isLoggedIn={isLoggedIn} isExactPath={false} component={TripDetails} />
             </Switch>
         </Fragment>

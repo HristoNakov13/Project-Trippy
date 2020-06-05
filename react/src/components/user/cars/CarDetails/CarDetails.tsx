@@ -14,6 +14,8 @@ const CarDetails: React.FC = () => {
     const { id } = useParams();
     const history = useHistory();
 
+    console.log("here");
+
     useEffect(() => {
         carService.getCarDetails(id)
             .then((res: CarDetailsModel) => {

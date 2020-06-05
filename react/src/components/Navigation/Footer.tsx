@@ -2,9 +2,7 @@ import React from "react";
 import "./Footer.css";
 
 import { Link } from "react-router-dom";
-import {Row, Col} from "react-bootstrap";
 
-import logo from "../../static/images/test-logo.png";
 import instagram from "../../static/images/social/instagram.svg";
 import facebook from "../../static/images/social/facebook.svg";
 import twitter from "../../static/images/social/twitter.svg";
@@ -15,29 +13,15 @@ const Footer: React.FC = () => {
     return (
         <footer className="site-footer">
             <div className="site-links">
-                <Row className="justify-content-md-center">
-                    <Col md="auto">
-                        <div className="footer-link">
-                            <Link className="anchor" to="/careers">
-                                Careers
-                            </Link>
-                        </div>
-                    </Col>
-                    <Col md="auto">
-                        <div className="footer-link">
-                            <Link className="anchor" to="/about">
-                                About
-                            </Link>
-                        </div>
-                    </Col>
-                    <Col md="auto">
-                        <div className="footer-link">
-                            <Link className="anchor" to="/contacts">
-                                Contact us
-                            </Link>
-                        </div>
-                    </Col>
-                </Row>
+                <Link className="anchor footer-link" to="/careers">
+                    Careers
+                </Link>
+                <Link className="anchor footer-link" to="/about">
+                    About
+                </Link>
+                <Link className="anchor footer-link" to="/contacts">
+                    Contact us
+                </Link>
             </div>
             <div className="footer-legal">
                 <div className="copyright">

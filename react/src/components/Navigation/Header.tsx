@@ -22,7 +22,7 @@ const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
             .finally(() => {
                 history.push("/");
             });
-    }), [history]);
+    }), [history, logout]);
 
     return (
         <Fragment>

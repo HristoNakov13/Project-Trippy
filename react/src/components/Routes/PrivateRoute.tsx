@@ -10,6 +10,7 @@ interface Props {
 }
 
 const PrivateRoute: React.FC<Props> = ({ isLoggedIn, path, isExactPath = true, component, param, ...props }) => {
+    console.log(param ? path + `:${param}` : path);
     return (
         <Fragment>
             {isLoggedIn

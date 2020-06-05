@@ -12,6 +12,8 @@ public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private String email;
+    private String social;
+    private String phoneNumber;
     private boolean isEnabled;
     private Set<UserRole> roles;
     private Set<Car> cars;
@@ -103,5 +105,23 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setCars(Set<Car> cars) {
         this.cars = cars;
+    }
+
+    @Column(name = "social")
+    public String getSocial() {
+        return social;
+    }
+
+    public void setSocial(String social) {
+        this.social = social;
+    }
+
+    @Column(name = "phone_number")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

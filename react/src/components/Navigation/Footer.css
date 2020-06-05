@@ -1,12 +1,11 @@
 .site-links {
-    display: flex;
-    width: 100%;
-    justify-content: center;
+    display: block;
+    text-align: center;
     margin-top: 4em;
     font-size: 1.1em;
 }
 
-.footer-link a {
+.footer-link {
     text-decoration: none !important;
     color: rgb(255, 255, 255, 0.7);
     transition: color 0.3s;
@@ -16,7 +15,7 @@
     color: rgb(255, 255, 255);
 }
 
-.footer-link:nth-child(n+2)::before {
+.site-links .footer-link:nth-child(n+2)::before {
     content: '';
     display: inline-block;
     height: 10px;
@@ -49,4 +48,10 @@
 .footer-social .social-icon:hover {
     transform: scale(1.2);
     transition: all 0.2s ease-in-out;
+}
+
+@media ( max-width: 700px ) {
+    .site-footer {
+        font-size: 0.7em;
+    }
 }

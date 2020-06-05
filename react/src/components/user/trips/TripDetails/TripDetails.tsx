@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./TripDetails.css";
 
 import { useHistory, useParams, Link } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 
 import TripDetailsModel from "./trip-details-interface";
 import tripService from "../../../../services/trip-service";
@@ -159,9 +159,9 @@ const TripDetails: React.FC = () => {
                     </Row>
                     <Row className="row mb-3">
                         <Col>
-                            <a target="_blank" className="btn btn-block btn-primary">
+                            <Button as={Link} to="/" className="btn btn-block btn-primary">
                                 <i className="fab fa-instagram"></i> &nbsp; Instagram profile
-                            </a>
+                            </Button>
                         </Col>
                     </Row>
                 </Card.Body>

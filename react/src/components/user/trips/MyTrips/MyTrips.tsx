@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { CardColumns, Row, Col } from "react-bootstrap";
-
 import TripCard from "./TripCard";
 import MyTripModel from "./my-trip-interface";
 import tripService from "../../../../services/trip-service";
