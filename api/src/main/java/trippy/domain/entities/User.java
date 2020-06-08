@@ -10,6 +10,7 @@ import java.util.Set;
 public class User extends BaseEntity implements UserDetails {
 
     private String username;
+    private String displayName;
     private String password;
     private String email;
     private String social;
@@ -17,6 +18,7 @@ public class User extends BaseEntity implements UserDetails {
     private boolean isEnabled;
     private Set<UserRole> roles;
     private Set<Car> cars;
+    private Image image;
 
     public User() {
     }
@@ -123,5 +125,23 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Column(name = "display_name")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @OneToOne
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image profileImage) {
+        this.image = profileImage;
     }
 }

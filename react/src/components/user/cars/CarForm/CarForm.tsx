@@ -1,10 +1,10 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 
 import { Formik, Field } from "formik";
 import { Form, Col, Row, Button } from "react-bootstrap";
 
 import Car from "../car-interface";
-import {OnSubmit, ImageChangeHandler} from "./form-func-interfaces";
+import { OnSubmit, ImageChangeHandler } from "./form-func-interfaces";
 import schema, { MAX_PASSENGER_CAPACITY } from "./car-validation-schema";
 
 interface Props {
@@ -24,14 +24,15 @@ const CarForm: React.FC<Props> = ({ onSubmit, imageChangeHandler, initialValues,
         return options.map((element: any, index: number) => {
             const value = index + 1;
             return <option value={value} selected={value === passangerCapacity}>{value}</option>
-        })}), []);
+        })
+    }), []);
 
     return (
         <Formik
             enableReinitialize={true}
             onSubmit={onSubmit}
             validationSchema={schema}
-            initialValues={initialValues}
+            initialValues={{ ...initialValues }}
         >
             {({
                 handleChange,

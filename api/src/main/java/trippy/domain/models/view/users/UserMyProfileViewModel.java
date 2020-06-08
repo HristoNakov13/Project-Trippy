@@ -3,9 +3,11 @@ package trippy.domain.models.view.users;
 public class UserMyProfileViewModel {
 
     private String username;
+    private String displayName;
     private String email;
     private String social;
     private String phoneNumber;
+    private String imageSrc;
 
     public UserMyProfileViewModel() {
     }
@@ -40,5 +42,21 @@ public class UserMyProfileViewModel {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 }

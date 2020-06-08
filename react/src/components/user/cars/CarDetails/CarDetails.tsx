@@ -14,13 +14,10 @@ const CarDetails: React.FC = () => {
     const { id } = useParams();
     const history = useHistory();
 
-    console.log("here");
-
     useEffect(() => {
         carService.getCarDetails(id)
-            .then((res: CarDetailsModel) => {
-                setCar(res);
-            }).catch(() => {
+            .then(setCar)
+            .catch(() => {
                 history.push("/not-found");
             })
     }, [history, id]);
@@ -33,11 +30,15 @@ const CarDetails: React.FC = () => {
             .catch(console.error);
     };
 
+    const { imageSrc, make, model, passengerCapacity, color, canEat,
+        canDrink, petsAllowed, canSmoke,
+        hasAirConditioning, hasLuggageSpace } = car;
+
 
     return <Card>
         <div className="wrapper">
             <div className="pic-container">
-                <Card.Img variant="top" src={car.imageSrc ? car.imageSrc : noImage} />
+                <Card.Img variant="top" src={imageSrc ? imageSrc : noImage} />
             </div>
         </div>
         <Card.Body>
@@ -46,46 +47,46 @@ const CarDetails: React.FC = () => {
                 <Row>
                     <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
                         <div>
-                            <span className="property-title">Make: </span>{car.make && car.make}
+                            <span className="property-title">Make: </span>{make}
                         </div>
                         <div>
-                            <span className="property-title">Model: </span>{car.model && car.model}
+                            <span className="property-title">Model: </span>{model}
                         </div>
                         <div>
-                            <span className="property-title">Seats: </span>{car.passengerCapacity && car.passengerCapacity}
+                            <span className="property-title">Seats: </span>{passengerCapacity}
                         </div>
                         <div>
-                            <span className="property-title">Color: </span>{car.color && car.color}
+                            <span className="property-title">Color: </span>{color}
                         </div>
                     </Col>
                     <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
                         <Row>
                             <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
-                                <span className={car.canEat ? "allowed" : "unallowed"}><i className="fas fa-utensils"></i></span><span> Food</span>
+                                <span className={canEat ? "allowed" : "unallowed"}><i className="fas fa-utensils"></i></span><span> Food</span>
                             </Col>
                             <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
-                                <span className={car.canDrink ? "allowed" : "unallowed"}><i className="fas fa-wine-bottle"></i></span><span> Drinks</span>
+                                <span className={canDrink ? "allowed" : "unallowed"}><i className="fas fa-wine-bottle"></i></span><span> Drinks</span>
                             </Col>
                             <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
-                                <span className={car.petsAllowed ? "allowed" : "unallowed"}><i className="fas fa-paw"></i></span><span> Pets</span>
+                                <span className={petsAllowed ? "allowed" : "unallowed"}><i className="fas fa-paw"></i></span><span> Pets</span>
                             </Col>
                             <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
-                                <span className={car.canSmoke ? "allowed" : "unallowed"}><i className="fas fa-smoking"></i></span><span> Smoking</span>
+                                <span className={canSmoke ? "allowed" : "unallowed"}><i className="fas fa-smoking"></i></span><span> Smoking</span>
                             </Col>
                         </Row>
                         <Row>
                             <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
-                                <span className={car.hasLuggageSpace ? "allowed" : "unallowed"}><i className="fas fa-suitcase"></i></span><span> Luggage space</span>
+                                <span className={hasLuggageSpace ? "allowed" : "unallowed"}><i className="fas fa-suitcase"></i></span><span> Luggage space</span>
                             </Col>
                             <Col className="col-12 col-sm-6 col-md-12 col-lg-6">
-                                <span className={car.hasAirConditioning ? "allowed" : "unallowed"}><i className="fas fa-snowflake"></i></span><span> Air Conditioning</span>
+                                <span className={hasAirConditioning ? "allowed" : "unallowed"}><i className="fas fa-snowflake"></i></span><span> Air Conditioning</span>
                             </Col>
                         </Row>
                     </Col>
                 </Row>
                 <Row className="justify-content-center">
                     <Col className="btn-wrapper">
-                        <Button as={Link} to={`/user/cars/edit-car/${car.id}`} variant="success"><i className="fas fa-edit"></i> Edit</Button>
+                        <Button as={Link} to={`/user/cars/edit-car/${id}`} variant="success"><i className="fas fa-edit"></i> Edit</Button>
                     </Col>
                     <Col className="btn-wrapper">
                         <Button variant="danger" onClick={handleDeleteCar}><i className="fas fa-trash-alt"></i> Delete</Button>

@@ -51,7 +51,7 @@ const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
                                 ? (<Fragment><NavDropdown alignRight title={user && user.username} id="account-controll-drpdown">
                                     <NavDropdown.Item as={Link} to="/user/trips"><i className="fas fa-map-marked-alt" /> My Trips</NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to="/user/cars"><i className="fas fa-car" /> My Cars</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/user/settings"><i className="fas fa-cog" /> Settings</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/user/profile"><i className="fas fa-cog" /> Profile</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item as={Link} onClick={handleLogOut} to="/logout"><i className="fas fa-sign-out-alt" /> Logout</NavDropdown.Item>
                                 </NavDropdown></Fragment>)

@@ -21,6 +21,8 @@ import CreateTrip from "../user/trips/CreateTrip/CreateTrip";
 import MyTrips from "../user/trips/MyTrips/MyTrips";
 import TripDetails from "../user/trips/TripDetails/TripDetails";
 
+import MyProfile from "../user/profile/MyProfile/MyProfile";
+
 interface Props {
     isLoggedIn: boolean,
     user: UserLogged,
@@ -83,6 +85,8 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <PrivateRoute path="/user/trips/create" isLoggedIn={isLoggedIn} component={CreateTrip} />
                 <PrivateRoute path="/user/trips" isLoggedIn={isLoggedIn} component={MyTrips} />
                 <PrivateRoute path="/trips/details/" param="id" isLoggedIn={isLoggedIn} isExactPath={false} component={TripDetails} />
+
+                <PrivateRoute path="/user/profile" isLoggedIn={isLoggedIn} component={MyProfile} />
             </Switch>
         </Fragment>
     );

@@ -22,6 +22,14 @@ public interface UserService extends UserDetailsService {
     void signUp(UserServiceModel user);
 
     /**
+     * Saves changes made to the {@link User} entity in the database.
+     *
+     * @param user {@link User} entity with the desired changes.
+     * @throws IllegalArgumentException if the {@link User} does not exist.
+     */
+    void editUser(User user);
+
+    /**
      * Tries to find a user by the given username from the database.
      * If found {@link User} is mapped to and returned as {@link UserServiceModel}.
      *
@@ -31,7 +39,14 @@ public interface UserService extends UserDetailsService {
      */
     UserServiceModel getUserByUsername(String username);
 
-    UserServiceModel getUserById(String id);
+    /**
+     * Fetches {@link User} from the database by the given {@param id}.
+     *
+     * @param id {@code String} unique identifier of a {@link User}.
+     * @return {@link User} entity.
+     * @throws UsernameNotFoundException if no user with the given {@param id} is found in the database.
+     */
+    User getUserById(String id);
 
     /**
      *Tries to find a user by the given username or email from the database.

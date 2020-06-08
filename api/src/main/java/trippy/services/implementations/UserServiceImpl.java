@@ -76,6 +76,16 @@ public class UserServiceImpl implements UserService {
         this.userRepository.saveAndFlush(userEntity);
     }
 
+    @Override
+    public void editUser(User user) {
+        //checks if the id is null and then checks if a user with that ID exists in the database
+        if (user.getId() == null || this.userRepository.findById(user.getId()).orElse(null) == null) {
+            throw new IllegalArgumentException("User does not exist in the database.");
+        }
+
+        this.userRepository.saveAndFlush(user);
+    }
+
     /**
      * Encodes the password of a user.
      *
@@ -101,10 +111,10 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public UserServiceModel getUserById(String id) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-
-        return this.modelMapper.map(user, UserServiceModel.class);
+    public User getUserById(String id) {
+        return this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
     /**
