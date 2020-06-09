@@ -16,11 +16,12 @@ const SignUp: React.FC = () => {
 
     const onbSubmit = useMemo(() => ((userData: CreateUser, { setErrors }: any) => {
         authService.signUp(userData)
-            .then((res) => {
+            .then(() => {
                 history.push("/login");
             })
             .catch((err) => {
-                serverValidationErrorHandler(err, setErrors);
+                serverValidationErrorHandler(err)
+                    .then((errors) => setErrors({ ...errors }));
             });
     }), [history]);
 

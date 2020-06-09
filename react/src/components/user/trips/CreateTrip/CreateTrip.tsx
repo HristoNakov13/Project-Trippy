@@ -12,7 +12,7 @@ import TripCreate from "../trip-create-interface";
 import schema, { MAX_PRICE_PER_PERSON, MAX_ESTIMATED_TRAVEL_TIME } from "./validation-schema";
 import tripService from "../../../../services/trip-service";
 import CreateTripFormData, { CarsFormData, CitiesFormData } from "./create-trip-form-data";
-import serverValidationErrors from "../../../../shared/errorhandler/server-validation-error-handler";
+import serverValidationErrorHandler from "../../../../shared/errorhandler/server-validation-error-handler";
 
 const CreateTrip: React.FC = () => {
     const [availableCars, setAvailableCars] = useState([] as Array<CarsFormData>);
@@ -60,7 +60,8 @@ const CreateTrip: React.FC = () => {
                 history.push("/user/trips");
             })
             .catch(err => {
-                serverValidationErrors(err, setErrors);
+                serverValidationErrorHandler(err)
+                    .then((errors) => setErrors({ ...errors }));
             });
     }
 

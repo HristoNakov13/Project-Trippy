@@ -42,7 +42,8 @@ const CreateCar: React.FC = () => {
                 history.push("/user/cars");
             })
             .catch(err => {
-                serverValidationErrors(err, setErrors);
+                serverValidationErrors(err)
+                    .then((errors) => setErrors({ ...errors }));
             });
     };
 

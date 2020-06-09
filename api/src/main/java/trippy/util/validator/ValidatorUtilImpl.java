@@ -1,5 +1,7 @@
 package trippy.util.validator;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.List;
@@ -30,5 +32,10 @@ public class ValidatorUtilImpl implements ValidatorUtil {
                     return validationError;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isMatchingPasswords(String formPassword, String userPassword) {
+        return BCrypt.checkpw(formPassword, userPassword);
     }
 }

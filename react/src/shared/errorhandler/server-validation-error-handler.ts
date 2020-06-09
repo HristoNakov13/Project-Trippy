@@ -5,14 +5,15 @@ interface LooseObject {
     [key: string]: string
 }
 
-const serverValidationErrorHandler = (httpError: HttpError, setErrors: any) => {
-    httpError.res.json()
+const serverValidationErrorHandler = async (httpError: HttpError): Promise<LooseObject> => {
+    return httpError.res.json()
         .then((errorData) => {
             const serverErrors: LooseObject = {};
             errorData.errors.forEach((err: ResponseError) => {
                 serverErrors[err.property] = err.message;
             });
-            setErrors({ ...serverErrors });
+
+            return serverErrors;
         });
 };
 

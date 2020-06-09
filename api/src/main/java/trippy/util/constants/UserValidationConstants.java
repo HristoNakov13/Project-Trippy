@@ -22,4 +22,21 @@ public class UserValidationConstants {
     public static final int MAX_PASSWORD_LENGTH = 250;
     public static final String INVALID_PASSWORD_LENGTH_MSG = "Password must be between " + MIN_PASSWORD_LENGTH + " and " + MAX_PASSWORD_LENGTH + " characters";
     public static final String PASSWORD_REQUIRED = "Password is required";
+    public static final String OLD_NEW_PASSWORDS_MISMATCH = "Password dont match with current";
+    public static final String INVALID_NEW_PASSWORD_LENGTH_MSG = "New " + INVALID_PASSWORD_LENGTH_MSG;
+    public static final String NEW_PASSWORD_REQUIRED = "New " + PASSWORD_REQUIRED;
+    public static final String PASSWORD_VALIDATION_TITLE = "Passwords failed to validate.";
+
+
+    public static final String PHONE_NUMBER_REGEX = "^((\\+359)|(0))([0-9]{9})$";
+    public static final String INVALID_PHONE_NUMBER = "Invalid phone number";
+
+
+    public static final String SOCIAL_REGEX = "(?:(?:http|https):\\/\\/)?(?:www.)?(?:instagram.com|instagr.am)\\/([A-Za-z0-9-_]+)((\\/)|())";
+    public static final String INVALID_SOCIAL = "Invalid social media url";
+
+
+    public static final int MIN_DISPLAY_NAME_LENGTH = 3;
+    public static final int MAX_DISPLAY_NAME_LENGTH = 20;
+    public static final String INVALID_DISPLAY_NAME_LENGTH = "Display name length must be between " + MIN_DISPLAY_NAME_LENGTH + " and " + MAX_DISPLAY_NAME_LENGTH + " characters";
 }

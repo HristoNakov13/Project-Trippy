@@ -47,7 +47,8 @@ const EditCar: React.FC = () => {
                 history.push(`/user/cars/details/${id}`);
             })
             .catch((err) => {
-                serverValidationErrorHandler(err, setErrors);
+                serverValidationErrorHandler(err)
+                    .then((errors) => setErrors({ ...errors }));
             });
     };
 

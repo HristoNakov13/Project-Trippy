@@ -1,16 +1,23 @@
 package trippy.domain.models.binding.user;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
+import trippy.util.validator.custom.ValidImage;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import static trippy.util.constants.UserValidationConstants.*;
 
 public class UserEditProfileBindingModel {
 
-    private String id;
     private String displayName;
     private String email;
     private String social;
     private String phoneNumber;
     private MultipartFile image;
 
+    @Length(min = MIN_DISPLAY_NAME_LENGTH, max = MAX_DISPLAY_NAME_LENGTH, message = INVALID_DISPLAY_NAME_LENGTH)
     public String getDisplayName() {
         return displayName;
     }
@@ -19,6 +26,8 @@ public class UserEditProfileBindingModel {
         this.displayName = displayName;
     }
 
+    @NotNull(message = EMAIL_REQUIRED)
+    @Pattern(regexp = EMAIL_REGEX, message = INVALID_EMAIL_MSG)
     public String getEmail() {
         return email;
     }
@@ -27,6 +36,7 @@ public class UserEditProfileBindingModel {
         this.email = email;
     }
 
+    @Pattern(regexp = SOCIAL_REGEX, message = INVALID_SOCIAL)
     public String getSocial() {
         return social;
     }
@@ -35,6 +45,7 @@ public class UserEditProfileBindingModel {
         this.social = social;
     }
 
+    @Pattern(regexp = PHONE_NUMBER_REGEX, message = INVALID_PHONE_NUMBER)
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -43,19 +54,12 @@ public class UserEditProfileBindingModel {
         this.phoneNumber = phoneNumber;
     }
 
+    @ValidImage
     public MultipartFile getImage() {
         return image;
     }
 
     public void setImage(MultipartFile image) {
         this.image = image;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

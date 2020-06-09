@@ -1,13 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "./MyProfile.css";
 
-import { Col, Row, Form, Button } from "react-bootstrap";
+import { Col, Row, Form, Button, InputGroup } from "react-bootstrap";
 import { Formik } from "formik";
 import { Link, useHistory } from "react-router-dom";
 
 import noImage from "../../../../static/images/no-image-icon.png";
 import MyProfileDetails from "./my-profile-user-interface";
 import userService from "../../../../services/user-service";
+import serverValidationErrorHandler from "../../../../shared/errorhandler/server-validation-error-handler";
+import schema from "./validation-schema";
 
 const MyProfile: React.FC = () => {
     const [userDetails, setUserDetails] = useState({} as MyProfileDetails);
@@ -24,20 +26,20 @@ const MyProfile: React.FC = () => {
         setUserAvatar(event.target.files[0]);
     };
 
-    const onSubmit = (userData: MyProfileDetails) => {
+    const onSubmit = (userData: MyProfileDetails, { setErrors }: any) => {
         const formData = new FormData();
         formData.append("image", userAvatar);
         formData.append("userData", JSON.stringify(userData));
 
         userService.editProfile(formData)
-            .then(res => {
-                console.log(res);
-                history.push("/user/profile");
+            .then(() => {
+                history.push("/");
             })
-            .catch(console.error);
+            .catch(err => {
+                serverValidationErrorHandler(err)
+                    .then((errors) => setErrors({ ...errors }));
+            });
     };
-
-    console.log(userDetails);
 
     const { username, imageSrc } = userDetails;
 
@@ -57,7 +59,9 @@ const MyProfile: React.FC = () => {
                     <h5>
                         {username}
                     </h5>
-                    <p className="proile-rating">RANKINGS : <span>8/10</span></p>
+                    <Link className="anchor" to="/user/profile/change-password">
+                        Change my password
+                    </Link>
                 </div>
             </Col>
         </Row>
@@ -77,6 +81,7 @@ const MyProfile: React.FC = () => {
                 <Formik
                     onSubmit={onSubmit}
                     initialValues={{ ...userDetails }}
+                    validationSchema={schema}
                     enableReinitialize={true}
                 >
                     {({
@@ -88,11 +93,14 @@ const MyProfile: React.FC = () => {
                         errors,
                     }) => (
                             <Form onSubmit={handleSubmit}>
-                                <Form.Group as={Row} controlId="formHorizontalEmail">
-                                    <Form.Label sm={2} column>
+                                <Form.Group controlId="displayName">
+                                    <Form.Label>
                                         Display name
                                     </Form.Label>
-                                    <Col sm={10}>
+                                    <InputGroup>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text><i className="fas fa-user" /></InputGroup.Text>
+                                        </InputGroup.Prepend>
                                         <Form.Control
                                             type="text"
                                             name="displayName"
@@ -100,14 +108,21 @@ const MyProfile: React.FC = () => {
                                             placeholder="Global display name"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
+                                            isInvalid={touched.displayName && !!errors.displayName}
                                         />
-                                    </Col>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.displayName}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
                                 </Form.Group>
-                                <Form.Group as={Row} controlId="formHorizontalEmail">
-                                    <Form.Label sm={2} column>
+                                <Form.Group controlId="email">
+                                    <Form.Label >
                                         Email
                                     </Form.Label>
-                                    <Col sm={10}>
+                                    <InputGroup>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text>@</InputGroup.Text>
+                                        </InputGroup.Prepend>
                                         <Form.Control
                                             type="email"
                                             name="email"
@@ -115,18 +130,21 @@ const MyProfile: React.FC = () => {
                                             placeholder="Email"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
+                                            isInvalid={touched.email && !!errors.email}
                                         />
-                                    </Col>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.email}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
                                 </Form.Group>
-                                <Row>
-                                    <span>Contacts:</span>
-                                    <hr />
-                                </Row>
-                                <Form.Group as={Row} controlId="formHorizontalPassword">
-                                    <Form.Label sm={2} column>
+                                <Form.Group controlId="phoneNumber">
+                                    <Form.Label>
                                         Phone
                                 </Form.Label>
-                                    <Col sm={10}>
+                                    <InputGroup>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text><i className="fas fa-mobile-alt" /></InputGroup.Text>
+                                        </InputGroup.Prepend>
                                         <Form.Control
                                             type="text"
                                             name="phoneNumber"
@@ -134,14 +152,21 @@ const MyProfile: React.FC = () => {
                                             placeholder="Phone number"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
+                                            isInvalid={touched.phoneNumber && !!errors.phoneNumber}
                                         />
-                                    </Col>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.phoneNumber}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
                                 </Form.Group>
-                                <Form.Group as={Row} controlId="formHorizontalPassword">
-                                    <Form.Label sm={2} column>
+                                <Form.Group controlId="social">
+                                    <Form.Label>
                                         Instagram
                                 </Form.Label>
-                                    <Col sm={10}>
+                                    <InputGroup>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text><i className="fab fa-instagram" /></InputGroup.Text>
+                                        </InputGroup.Prepend>
                                         <Form.Control
                                             type="text"
                                             name="social"
@@ -149,18 +174,24 @@ const MyProfile: React.FC = () => {
                                             placeholder="Instagram profile url"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
+                                            isInvalid={touched.social && !!errors.social}
                                         />
-                                    </Col>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.social}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
                                 </Form.Group>
-                                <Button variant="primary" type="submit">
-                                    Edit Profile
-                                </Button>
+                                <Col className="text-center">
+                                    <Button variant="warning" type="submit">
+                                        <i className="fas fa-edit"></i> Save Changes
+                                    </Button>
+                                </Col>
                             </Form>
                         )}
                 </Formik>
             </Col>
         </Row>
-    </Fragment>
+    </Fragment >
 };
 
 export default MyProfile;

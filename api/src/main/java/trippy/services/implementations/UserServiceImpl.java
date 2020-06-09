@@ -86,6 +86,13 @@ public class UserServiceImpl implements UserService {
         this.userRepository.saveAndFlush(user);
     }
 
+    @Override
+    public void changeUserPassword(User user, String newPassword) {
+        user.setPassword(this.encodePassword(newPassword));
+
+        this.userRepository.saveAndFlush(user);
+    }
+
     /**
      * Encodes the password of a user.
      *

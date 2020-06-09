@@ -30,6 +30,14 @@ public interface UserService extends UserDetailsService {
     void editUser(User user);
 
     /**
+     * Changes the password of a {@link User}.
+     *
+     * @param user The desired {@link User} entity to change it's password.
+     * @param newPassword {@code String} the new password.
+     */
+    void changeUserPassword(User user, String newPassword);
+
+    /**
      * Tries to find a user by the given username from the database.
      * If found {@link User} is mapped to and returned as {@link UserServiceModel}.
      *
