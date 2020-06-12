@@ -20,6 +20,7 @@ import EditCar from "../user/cars/EditCar/EditCar";
 import CreateTrip from "../user/trips/CreateTrip/CreateTrip";
 import MyTrips from "../user/trips/MyTrips/MyTrips";
 import TripDetails from "../user/trips/TripDetails/TripDetails";
+import SearchTrips from "../../components/user/trips/SearchTrips/SearchTrips";
 
 import MyProfile from "../user/profile/MyProfile/MyProfile";
 import ChangePassword from "../user/profile/ChangePassword/ChangePassword";
@@ -86,6 +87,8 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <PrivateRoute path="/user/trips/create" isLoggedIn={isLoggedIn} component={CreateTrip} />
                 <PrivateRoute path="/user/trips" isLoggedIn={isLoggedIn} component={MyTrips} />
                 <PrivateRoute path="/trips/details/" param="id" isLoggedIn={isLoggedIn} isExactPath={false} component={TripDetails} />
+                <Route path="/trips/search" exact component={SearchTrips} />
+
 
                 <Route path="/user/profile" exact render={() => (
                     isLoggedIn
@@ -97,7 +100,6 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                         ? <ChangePassword />
                         : <Redirect to="/" />
                 )} />
-
             </Switch>
         </Fragment>
     );

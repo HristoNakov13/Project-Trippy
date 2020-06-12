@@ -4,6 +4,9 @@ import { Formik } from "formik";
 import { Form, Button, Col, InputGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
+import SelectMenu from "../../../../shared/components/SelectMenu/SelectMenu";
+import SelectMenuValue from "../../../../shared/components/SelectMenu/select-menu-values-interface";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from 'date-fns';
@@ -13,6 +16,7 @@ import schema, { MAX_PRICE_PER_PERSON, MAX_ESTIMATED_TRAVEL_TIME } from "./valid
 import tripService from "../../../../services/trip-service";
 import CreateTripFormData, { CarsFormData, CitiesFormData } from "./create-trip-form-data";
 import serverValidationErrorHandler from "../../../../shared/errorhandler/server-validation-error-handler";
+
 
 const CreateTrip: React.FC = () => {
     const [availableCars, setAvailableCars] = useState([] as Array<CarsFormData>);
@@ -27,32 +31,19 @@ const CreateTrip: React.FC = () => {
             });
     }, []);
 
-    //would it be better to merge those two?
-    const populateCitiesMenu = useMemo(() => ((cities: Array<CitiesFormData>, selectedValue: string) => {
-        return cities.map((city: CitiesFormData) => {
-            return <option
-                key={city.id}
-                selected={city.name === selectedValue}
-                value={city.id}
-            >
-                {city.name}
-            </option>
-        });
-    }), []);
+    const availableCitiesMemo = useMemo(() => (availableCities.map((city: CitiesFormData) => {
+        return {
+            id: city.id,
+            value: city.name
+        } as SelectMenuValue
+    })), [availableCities]);
 
-    const populateCarsMenu = (cars: Array<CarsFormData>, selectedValue: string) => {
-        return cars.map((car: CarsFormData) => {
-            const carValue = `${car.make} - ${car.model}`;
-
-            return <option
-                key={car.id}
-                selected={carValue === selectedValue}
-                value={car.id}
-            >
-                {carValue}
-            </option>
-        });
-    };
+    const availableCarsMemo = useMemo(() => (availableCars.map((car: CarsFormData) => {
+        return {
+            id: car.id,
+            value: `${car.make} - ${car.model}`
+        } as SelectMenuValue
+    })), [availableCars]);
 
     const onSubmit = (tripData: TripCreate, { setErrors }: any) => {
         tripService.createTrip(tripData)
@@ -63,7 +54,7 @@ const CreateTrip: React.FC = () => {
                 serverValidationErrorHandler(err)
                     .then((errors) => setErrors({ ...errors }));
             });
-    }
+    };
 
     return <Formik
         onSubmit={onSubmit}
@@ -96,14 +87,14 @@ const CreateTrip: React.FC = () => {
                                     <InputGroup.Prepend>
                                         <InputGroup.Text><i className="fas fa-map-marker-alt"></i></InputGroup.Text>
                                     </InputGroup.Prepend>
-                                    <Form.Control as="select"
+                                    <SelectMenu
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         name="from"
-                                        isInvalid={touched.from && !!errors.from}>
-                                        <option selected disabled>Travel from...</option>
-                                        {populateCitiesMenu(availableCities, values.from)}
-                                    </Form.Control>
+                                        isInvalid={touched.from && !!errors.from}
+                                        disabledOption="Travel from..."
+                                        values={availableCitiesMemo}
+                                    />
                                     <Form.Control.Feedback type="invalid">
                                         {errors.from}
                                     </Form.Control.Feedback>
@@ -117,14 +108,14 @@ const CreateTrip: React.FC = () => {
                                     <InputGroup.Prepend>
                                         <InputGroup.Text><i className="fas fa-map-marker-alt"></i></InputGroup.Text>
                                     </InputGroup.Prepend>
-                                    <Form.Control as="select"
+                                    <SelectMenu
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         name="to"
-                                        isInvalid={touched.to && !!errors.to}>
-                                        <option selected disabled>Travel to...</option>
-                                        {populateCitiesMenu(availableCities, values.to)}
-                                    </Form.Control>
+                                        isInvalid={touched.to && !!errors.to}
+                                        disabledOption="Travel to..."
+                                        values={availableCitiesMemo}
+                                    />
                                     <Form.Control.Feedback type="invalid">
                                         {errors.to}
                                     </Form.Control.Feedback>
@@ -138,14 +129,14 @@ const CreateTrip: React.FC = () => {
                             <InputGroup.Prepend>
                                 <InputGroup.Text><i className="fas fa-car"></i></InputGroup.Text>
                             </InputGroup.Prepend>
-                            <Form.Control as="select"
+                            <SelectMenu
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="car"
-                                isInvalid={touched.car && !!errors.car}>
-                                <option selected disabled>My Cars...</option>
-                                {populateCarsMenu(availableCars, values.car)}
-                            </Form.Control>
+                                isInvalid={touched.car && !!errors.car}
+                                disabledOption="My Cars..."
+                                values={availableCarsMemo}
+                            />
                             <Form.Control.Feedback type="invalid">
                                 {errors.car}
                             </Form.Control.Feedback>

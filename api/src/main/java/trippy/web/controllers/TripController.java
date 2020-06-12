@@ -13,8 +13,10 @@ import trippy.domain.entities.City;
 import trippy.domain.entities.Trip;
 import trippy.domain.entities.User;
 import trippy.domain.models.binding.trip.TripCreateBindingModel;
+import trippy.domain.models.binding.trip.TripSearchBindingModel;
 import trippy.domain.models.view.cars.CarCreateTripViewModel;
 import trippy.domain.models.view.trips.mytrips.TripMyTripsViewModel;
+import trippy.domain.models.view.trips.search.CitySearchViewModel;
 import trippy.domain.models.view.trips.tripdetails.TripDetailsViewModel;
 import trippy.services.CarService;
 import trippy.services.CityService;
@@ -117,6 +119,23 @@ public class TripController {
         TripDetailsViewModel tripDetailsViewModel = this.modelMapper.map(trip, TripDetailsViewModel.class);
 
         return ResponseEntity.ok(tripDetailsViewModel);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/cities")
+    public ResponseEntity<List<CitySearchViewModel>> getAvailableCities() {
+        List<CitySearchViewModel> cities = this.cityService.getAllCities()
+                .stream()
+                .map(city -> this.modelMapper.map(city, CitySearchViewModel.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(cities);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/search")
+    public ResponseEntity<?> search(@RequestBody TripSearchBindingModel tripSearchBindingModel) {
+        System.out.println();
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //adds type mappings

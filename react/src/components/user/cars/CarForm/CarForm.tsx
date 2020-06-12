@@ -19,7 +19,7 @@ const CarForm: React.FC<Props> = ({ onSubmit, imageChangeHandler, initialValues,
     //if the current option value is equal to the initial value(for edit car form) it is set as selected
     //otherwise in the creat car form the default disabled option is selected
     const selectMenu = useMemo(() => ((passangerCapacity: number) => {
-        const options = Array.from(Array(MAX_PASSENGER_CAPACITY).keys())
+        const options = Array.from(Array(MAX_PASSENGER_CAPACITY).keys());
 
         return options.map((element: any, index: number) => {
             const value = index + 1;
