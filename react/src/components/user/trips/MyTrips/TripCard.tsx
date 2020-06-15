@@ -17,12 +17,12 @@ const TripCard: React.FC<Props> = ({ tripData }) => {
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-map-marker-alt"></i>
                             <span className="card-feature-title"> From: </span>
-                            <span>{tripData.from.name}</span>
+                            <span>{tripData.from && tripData.from.name}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-map-marker-alt"></i>
                             <span className="card-feature-title"> To: </span>
-                            <span>{tripData.to.name}</span>
+                            <span>{tripData.to && tripData.to.name}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-calendar-alt"></i>
@@ -37,12 +37,12 @@ const TripCard: React.FC<Props> = ({ tripData }) => {
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-car"></i>
                             <span className="card-feature-title"> Car: </span>
-                            <span>{tripData.car.make}</span>
+                            <span>{tripData.car && tripData.car.make}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-users"></i>
                             <span className="card-feature-title"> Seats: </span>
-                            <span>{tripData.seatsTaken} out of {tripData.car.passengerCapacity}</span>
+                            <span>{tripData.seatsTaken} out of {tripData.car && tripData.car.passengerCapacity}</span>
                         </Col>
                         <Col className="col-12 col-xl-6">
                             <i className="fas fa-tags"></i>

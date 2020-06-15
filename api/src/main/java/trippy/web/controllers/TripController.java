@@ -17,11 +17,14 @@ import trippy.domain.models.binding.trip.TripSearchBindingModel;
 import trippy.domain.models.view.cars.CarCreateTripViewModel;
 import trippy.domain.models.view.trips.mytrips.TripMyTripsViewModel;
 import trippy.domain.models.view.trips.search.CitySearchViewModel;
+import trippy.domain.models.view.trips.search.TripSearchViewModel;
 import trippy.domain.models.view.trips.tripdetails.TripDetailsViewModel;
 import trippy.services.CarService;
 import trippy.services.CityService;
 import trippy.services.TripService;
 import trippy.util.constants.TripValidationConstants;
+import trippy.util.trips.search.SearchTripParams;
+import trippy.util.trips.search.SearchTripParamsBuilder;
 import trippy.util.validator.ErrorResponse;
 import trippy.util.validator.ValidationError;
 import trippy.util.validator.ValidatorUtil;
@@ -33,6 +36,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static trippy.util.constants.TripValidationConstants.INVALID_SEARCH_TITLE;
 
 @Controller
 @RequestMapping("/api/user/trips")
@@ -133,9 +138,27 @@ public class TripController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/search")
     public ResponseEntity<?> search(@RequestBody TripSearchBindingModel tripSearchBindingModel) {
-        System.out.println();
+        List<ValidationError> errors = this.validatorUtil.getErrors(tripSearchBindingModel);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (!errors.isEmpty()) {
+            ErrorResponse errorResponse = new ErrorResponse(INVALID_SEARCH_TITLE, errors);
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+        SearchTripParamsBuilder builder = new SearchTripParamsBuilder();
+        SearchTripParams searchParams = builder.setFrom(tripSearchBindingModel.getFrom())
+                .setTo(tripSearchBindingModel.getTo())
+                .setDepartureDate(tripSearchBindingModel.getDepartureDate())
+                .setDesiredSeats(tripSearchBindingModel.getDesiredSeats())
+                .build();
+
+        //not sure if there should be return case with 404 if no trips are found
+        List<TripSearchViewModel> trips = this.tripService.search(searchParams)
+                .stream()
+                .map(trip -> this.modelMapper.map(trip, TripSearchViewModel.class))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(trips, HttpStatus.OK);
     }
 
     //adds type mappings
@@ -211,5 +234,14 @@ public class TripController {
                         mapping.using(extractTime).map(Trip::getDepartureDate, TripDetailsViewModel::setDepartureTime))
                 .addMappings(mapping ->
                         mapping.using(seatsTakenConverter).map(Trip::getPassengers, TripDetailsViewModel::setSeatsTaken));
+
+        //trip search
+        this.modelMapper.createTypeMap(Trip.class, TripSearchViewModel.class)
+                .addMappings(mapping ->
+                        mapping.using(extractDate).map(Trip::getDepartureDate, TripSearchViewModel::setDepartureDate))
+                .addMappings(mapping ->
+                        mapping.using(extractTime).map(Trip::getDepartureDate, TripSearchViewModel::setDepartureTime))
+                .addMappings(mapping ->
+                        mapping.using(seatsTakenConverter).map(Trip::getPassengers, TripSearchViewModel::setSeatsTaken));
     }
 }

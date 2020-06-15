@@ -1,0 +1,15 @@
+.search-result-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+    padding: 0.5em;
+    /* border-top: 2px, solid, rgb(206, 192, 219); */
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: rgb(206, 192, 219);
+}
+
+.no-results {
+    color: rgb(243, 61, 61);
+    font-style: italic;
+}

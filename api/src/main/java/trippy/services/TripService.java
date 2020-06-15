@@ -1,6 +1,7 @@
 package trippy.services;
 
 import trippy.domain.entities.Trip;
+import trippy.util.trips.search.SearchTripParams;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface TripService {
      * @return {@link Trip} with the given id.
      */
     Trip getTripById(String tripId);
+
+    List<Trip> search(SearchTripParams searchTripParams);
 }

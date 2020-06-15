@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import trippy.domain.entities.Trip;
 import trippy.repositories.TripRepository;
 import trippy.services.TripService;
+import trippy.util.trips.search.SearchTripParams;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -35,5 +36,13 @@ public class TripServiceImpl implements TripService {
 
         return this.tripRepository.findById(tripId)
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public List<Trip> search(SearchTripParams searchTripParams) {
+        return this.tripRepository.searchTrips(searchTripParams.getFrom(),
+                searchTripParams.getTo(),
+                searchTripParams.getDesiredSeats(),
+                searchTripParams.getDepartureDate());
     }
 }

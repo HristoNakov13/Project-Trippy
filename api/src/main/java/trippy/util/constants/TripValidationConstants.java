@@ -21,4 +21,8 @@ public class TripValidationConstants {
 
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 255;
     public static final String INVALID_ADDITIONAL_INFO_LENGTH = "Additional info cannot be more than " + MAX_ADDITIONAL_INFO_LENGTH + " characters";
+
+
+    public static final String DATE_FUTURE_PRESENT = "Date must be in the future or present";
+    public static final String INVALID_SEARCH_TITLE = "Search parameters failed to validate.";
 }

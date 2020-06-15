@@ -39,7 +39,7 @@ const tripService = {
         return http.get(END_POINTS.getAvailableSearchCities);
     },
 
-    search: (searchData: SearchTrip): Promise<any> => {
+    search: (searchData: SearchTrip): Promise<Array<MyTripModel>> => {
         return http.post(END_POINTS.search, searchData);
     },
 };
