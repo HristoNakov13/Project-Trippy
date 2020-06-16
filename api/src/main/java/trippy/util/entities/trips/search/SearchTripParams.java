@@ -1,4 +1,4 @@
-package trippy.util.trips.search;
+package trippy.util.entities.trips.search;
 
 import java.time.LocalDate;
 

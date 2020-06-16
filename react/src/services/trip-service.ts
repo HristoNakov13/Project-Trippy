@@ -16,13 +16,15 @@ const END_POINTS = {
     getTripDetails: API_ROOT + "/details",
     getAvailableSearchCities: API_ROOT + "/cities",
     search: API_ROOT + "/search",
+    apply: API_ROOT + "/apply",
+    hasApplied: API_ROOT + "/applicant-check"
 };
 
 const tripService = {
     getCreateTripFormData: (): Promise<CreateTripFormData> => {
         return http.get(END_POINTS.getCreateTripFormData);
     },
-    
+
     createTrip: (tripData: TripCreate): Promise<any> => {
         return http.post(END_POINTS.createTrip, tripData);
     },
@@ -41,6 +43,14 @@ const tripService = {
 
     search: (searchData: SearchTrip): Promise<Array<MyTripModel>> => {
         return http.post(END_POINTS.search, searchData);
+    },
+
+    apply: (tripId: string): Promise<any> => {
+        return http.post(END_POINTS.apply, { id: tripId });
+    },
+
+    hasApplied: (tripId: string): Promise<boolean> => {
+        return http.post(END_POINTS.hasApplied, { id: tripId });
     },
 };
 

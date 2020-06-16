@@ -19,6 +19,7 @@ public class User extends BaseEntity implements UserDetails {
     private Set<UserRole> roles;
     private Set<Car> cars;
     private Image image;
+    private Set<Notification> notifications;
 
     public User() {
     }
@@ -143,5 +144,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setImage(Image profileImage) {
         this.image = profileImage;
+    }
+
+    @OneToMany
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
     }
 }

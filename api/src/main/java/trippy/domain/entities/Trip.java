@@ -16,6 +16,7 @@ public class Trip extends BaseEntity {
     private User driver;
     private Car car;
     private Set<User> passengers;
+    private Set<User> applicants;
     private BigDecimal pricePerPerson;
     private String additionalInfo;
 
@@ -103,5 +104,14 @@ public class Trip extends BaseEntity {
 
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
+    }
+
+    @OneToMany
+    public Set<User> getApplicants() {
+        return applicants;
+    }
+
+    public void setApplicants(Set<User> applicants) {
+        this.applicants = applicants;
     }
 }

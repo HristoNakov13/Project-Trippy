@@ -12,7 +12,9 @@ import trippy.domain.entities.Car;
 import trippy.domain.entities.City;
 import trippy.domain.entities.Trip;
 import trippy.domain.entities.User;
+import trippy.domain.models.binding.trip.TripApplyBindingModel;
 import trippy.domain.models.binding.trip.TripCreateBindingModel;
+import trippy.domain.models.binding.trip.TripHasAppliedBindingModel;
 import trippy.domain.models.binding.trip.TripSearchBindingModel;
 import trippy.domain.models.view.cars.CarCreateTripViewModel;
 import trippy.domain.models.view.trips.mytrips.TripMyTripsViewModel;
@@ -23,8 +25,8 @@ import trippy.services.CarService;
 import trippy.services.CityService;
 import trippy.services.TripService;
 import trippy.util.constants.TripValidationConstants;
-import trippy.util.trips.search.SearchTripParams;
-import trippy.util.trips.search.SearchTripParamsBuilder;
+import trippy.util.entities.trips.search.SearchTripParams;
+import trippy.util.entities.trips.search.SearchTripParamsBuilder;
 import trippy.util.validator.ErrorResponse;
 import trippy.util.validator.ValidationError;
 import trippy.util.validator.ValidatorUtil;
@@ -159,6 +161,31 @@ public class TripController {
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(trips, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/apply")
+    public ResponseEntity<?> apply(Authentication authentication, @RequestBody TripApplyBindingModel tripApplyBindingModel) {
+        User user = (User) authentication.getPrincipal();
+
+        if (tripApplyBindingModel.getId() == null
+                || !this.tripService.canApplyForTrip(user.getId(), tripApplyBindingModel.getId())) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setTitle("Invalid trip/user cannot join this trip.");
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        this.tripService.apply(user, tripApplyBindingModel.getId());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/applicant-check")
+    public ResponseEntity<Boolean> hasApplied(Authentication authentication,@RequestBody TripHasAppliedBindingModel tripApplyBindingModel) {
+        User user = (User) authentication.getPrincipal();
+        boolean hasApplied = this.tripService.hasApplied(user, tripApplyBindingModel.getId());
+
+        return ResponseEntity.ok(hasApplied);
     }
 
     //adds type mappings

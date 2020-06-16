@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import "./TripDetails.css";
 
 import { useHistory, useParams, Link } from "react-router-dom";
@@ -6,19 +6,39 @@ import { Card, Row, Col, Button } from "react-bootstrap";
 
 import TripDetailsModel from "./trip-details-interface";
 import tripService from "../../../../services/trip-service";
+import { UserContext } from "../../../../contexts/user/UserContext";
 
 const TripDetails: React.FC = () => {
     const [tripDetails, setTripDetails] = useState({} as TripDetailsModel);
+    const [hasApplied, setHasApplied] = useState(false);
+
     const { id } = useParams();
     const history = useHistory();
+    const { user } = useContext(UserContext);
+
 
     useEffect(() => {
         tripService.getTripDetails(id)
-            .then(setTripDetails)
+            .then(res => {
+                setTripDetails(res);
+
+                if (user.id !== res.driver.id) {
+                    tripService.hasApplied(res.id)
+                        .then(setHasApplied);
+                }
+            })
             .catch(err => {
                 history.push("/not-found");
             });
     }, [history, id]);
+
+    const applyHandler = () => {
+        tripService.apply(tripDetails.id)
+            .then(() => {
+                setHasApplied(true);
+            })
+            .catch(console.error);
+    };
 
     return (
         <Row>
@@ -159,9 +179,24 @@ const TripDetails: React.FC = () => {
                     </Row>
                     <Row className="row mb-3">
                         <Col>
-                            <Button as={Link} to="/" className="btn btn-block btn-primary">
+                            <Button as={Link} to="/" variant="primary" block>
                                 <i className="fab fa-instagram"></i> &nbsp; Instagram profile
                             </Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="text-center">
+                            {(tripDetails.driver && tripDetails.driver.id === user.id)
+                                ? <Button variant="warning" block>Edit</Button>
+                                : <Button
+                                    disabled={hasApplied}
+                                    onClick={applyHandler}
+                                    variant={hasApplied ? "secondary" : "warning"}
+                                    block>
+                                    {hasApplied
+                                        ? <i className="fas fa-check"> Applied</i>
+                                        : "Apply"}
+                                </Button>}
                         </Col>
                     </Row>
                 </Card.Body>

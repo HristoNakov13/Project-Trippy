@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import trippy.util.cookies.CookieUtil;
 import trippy.util.cookies.CookieUtilImpl;
+import trippy.util.entities.notifications.NotificationBuilder;
 import trippy.util.files.FileUtil;
 import trippy.util.files.FileUtilImpl;
 import trippy.util.images.ImageUtil;
@@ -52,5 +53,10 @@ public class AppBeanConfiguration {
         return new Gson()
                 .newBuilder()
                 .create();
+    }
+
+    @Bean
+    public NotificationBuilder notificationBuilder() {
+        return new NotificationBuilder();
     }
 }

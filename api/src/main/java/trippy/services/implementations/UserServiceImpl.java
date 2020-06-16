@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import trippy.domain.entities.Car;
+import trippy.domain.entities.Notification;
 import trippy.domain.entities.User;
 import trippy.domain.entities.UserRole;
 import trippy.domain.models.service.UserServiceModel;
@@ -164,6 +165,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new CredentialNotFoundException("User not found."));
 
         return user.getCars();
+    }
+
+    @Override
+    public void addNotification(User user, Notification notification) {
+        user.getNotifications().add(notification);
+
+        this.userRepository.saveAndFlush(user);
     }
 
     @Override

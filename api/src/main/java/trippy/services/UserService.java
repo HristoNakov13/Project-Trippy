@@ -3,6 +3,7 @@ package trippy.services;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import trippy.domain.entities.Car;
+import trippy.domain.entities.Notification;
 import trippy.domain.entities.User;
 import trippy.domain.models.service.UserServiceModel;
 
@@ -90,4 +91,12 @@ public interface UserService extends UserDetailsService {
      * @throws CredentialNotFoundException if no users are found with the given {@param username}.
      */
     Set<Car> getUserCarsByUsername(String username) throws CredentialNotFoundException;
+
+    /**
+     * Adds a {@link Notification} to a {@link User}.
+     *
+     * @param user {@link User} the user to which the notification is added.
+     * @param notification {@link Notification} the notification that's to be added.
+     */
+    void addNotification(User user, Notification notification);
 }
