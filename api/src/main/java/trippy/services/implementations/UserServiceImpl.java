@@ -12,12 +12,13 @@ import trippy.domain.entities.UserRole;
 import trippy.domain.models.service.UserServiceModel;
 import trippy.repositories.UserRepository;
 import trippy.repositories.UserRoleRepository;
+import trippy.services.NotificationService;
 import trippy.services.UserService;
 
 import javax.security.auth.login.CredentialNotFoundException;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static trippy.util.constants.UserValidationConstants.EMAIL_TAKEN;
 import static trippy.util.constants.UserValidationConstants.USERNAME_TAKEN;
@@ -29,12 +30,14 @@ public class UserServiceImpl implements UserService {
     private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final NotificationService notificationService;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -169,7 +172,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addNotification(User user, Notification notification) {
-        user.getNotifications().add(notification);
+        Notification toBeAdded = this.notificationService.saveNotification(notification);
+        user.getNotifications().add(toBeAdded);
 
         this.userRepository.saveAndFlush(user);
     }

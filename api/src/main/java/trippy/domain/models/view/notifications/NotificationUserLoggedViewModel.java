@@ -1,33 +1,22 @@
-package trippy.domain.entities;
+package trippy.domain.models.view.notifications;
 
 import trippy.domain.entities.enums.NotificationAction;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "notifications")
-public class Notification {
+public class NotificationUserLoggedViewModel {
 
     private Long id;
     private String title;
-
-    //action will be used for url redirection from notifications tab to the appropriate root (trip, user, etc)
     private NotificationAction action;
-
-    //value is intended to be stored value of an id for instance of a trip a user joined
     private String value;
-
-    //destination stores id of the target. For example User with id "value" applies to join Trip with id "destination"
     private String destination;
     private LocalDateTime createdAt;
     private boolean isRead;
 
-    public Notification() {
+    public NotificationUserLoggedViewModel() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -36,7 +25,6 @@ public class Notification {
         this.id = id;
     }
 
-    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -45,7 +33,6 @@ public class Notification {
         this.title = title;
     }
 
-    @Enumerated(EnumType.ORDINAL)
     public NotificationAction getAction() {
         return action;
     }
@@ -54,16 +41,6 @@ public class Notification {
         this.action = action;
     }
 
-    @Column(name = "created_at")
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Column(name = "value")
     public String getValue() {
         return value;
     }
@@ -72,7 +49,14 @@ public class Notification {
         this.value = value;
     }
 
-    @Column(name = "is_read")
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public boolean isRead() {
         return isRead;
     }
@@ -81,7 +65,6 @@ public class Notification {
         isRead = read;
     }
 
-    @Column(name = "destination")
     public String getDestination() {
         return destination;
     }

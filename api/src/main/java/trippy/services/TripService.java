@@ -59,4 +59,29 @@ public interface TripService {
      * @return {@code boolean} result of the check.
      */
     boolean hasApplied(User user, String tripId);
+
+    /**
+     * Approves the applicant to become part of the trip.
+     *
+     * @param applicantId {@code String} id of the {@link User} applicant.
+     * @param tripId {@code String} id of the {@link Trip}.
+     */
+    void approveApplicant(String applicantId, String tripId);
+
+    /**
+     * Denies the given applicant from joining the trip.
+     *
+     * @param applicantId {@code String}id of the {@link User} applicant.
+     * @param tripId {@code String} id of the {@link Trip}.
+     */
+    void denyApplicant(String applicantId, String tripId);
+
+    /**
+     * Checks whether a {@link User} is the creator of a {@link Trip}.
+     *
+     * @param userId {@code String} id of the {@link User}.
+     * @param tripId {@code String} id of the {@link Trip}.
+     * @return {@code boolean}
+     */
+    boolean isTripCreator(String userId, String tripId);
 }

@@ -52,7 +52,7 @@ const Navigation: React.FC<Props> = ({ isLoggedIn, user }) => {
                         <Nav className="nav navbar-nav ml-auto w-100 justify-content-end">
                             {isLoggedIn
                                 ? (<Fragment>
-                                    <UserNotifications />
+                                    <UserNotifications notifications={user.notifications} />
                                     <NavDropdown alignRight title={user && user.username} id="account-controll-drpdown">
                                         <NavDropdown.Item as={Link} to="/user/trips"><i className="fas fa-map-marked-alt" /> My Trips</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/user/cars"><i className="fas fa-car" /> My Cars</NavDropdown.Item>

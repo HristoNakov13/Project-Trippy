@@ -25,6 +25,8 @@ import SearchTrips from "../../components/user/trips/SearchTrips/SearchTrips";
 import MyProfile from "../user/profile/MyProfile/MyProfile";
 import ChangePassword from "../user/profile/ChangePassword/ChangePassword";
 
+import ViewAllNotifications from "../navigation/UserNotifications/ViewAllNotifications/ViewAllNotifications";
+
 interface Props {
     isLoggedIn: boolean,
     user: UserLogged,
@@ -62,25 +64,25 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <Route path="/user/cars" exact render={() => (
                     isLoggedIn
                         ? <MyCars />
-                        : <Redirect to="/" />
+                        : <Redirect to="/login" />
                 )} />
 
                 <Route path="/user/cars/create-car" exact render={() => (
                     isLoggedIn
                         ? <CreateCar />
-                        : <Redirect to="/" />
+                        : <Redirect to="/login" />
                 )} />
 
                 <Route path="/user/cars/edit-car/:id" render={() => (
                     isLoggedIn
                         ? <EditCar />
-                        : <Redirect to="/" />
+                        : <Redirect to="/login" />
                 )} />
 
                 <Route path="/user/cars/details/:id" render={() => (
                     isLoggedIn
                         ? <CarDetails />
-                        : <Redirect to="/" />
+                        : <Redirect to="/login" />
                 )} />
 
 
@@ -93,12 +95,18 @@ const Routes: React.FC<Props> = ({ isLoggedIn, user }) => {
                 <Route path="/user/profile" exact render={() => (
                     isLoggedIn
                         ? <MyProfile />
-                        : <Redirect to="/" />
+                        : <Redirect to="/login" />
                 )} />
                 <Route path="/user/profile/change-password" exact render={() => (
                     isLoggedIn
                         ? <ChangePassword />
-                        : <Redirect to="/" />
+                        : <Redirect to="/login" />
+                )} />
+
+                <Route path="/user/notifications" exact render={() => (
+                    isLoggedIn
+                        ? <ViewAllNotifications />
+                        : <Redirect to="/login" />
                 )} />
             </Switch>
         </Fragment>

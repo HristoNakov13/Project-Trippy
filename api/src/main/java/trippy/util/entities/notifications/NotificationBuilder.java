@@ -4,13 +4,13 @@ import trippy.domain.entities.Notification;
 import trippy.domain.entities.enums.NotificationAction;
 
 import java.time.LocalDateTime;
-import java.util.MissingFormatArgumentException;
 
 public class NotificationBuilder {
 
     private String title;
     private NotificationAction notificationAction;
     private String value;
+    private String destination;
 
     public NotificationBuilder() {
     }
@@ -33,6 +33,12 @@ public class NotificationBuilder {
         return this;
     }
 
+    public NotificationBuilder setDestination(String destination) {
+        this.destination = destination;
+
+        return this;
+    }
+
     public Notification build() {
         if (this.title == null) {
             throw new IllegalArgumentException("Title is required.");
@@ -44,6 +50,7 @@ public class NotificationBuilder {
         notification.setAction(this.notificationAction);
         notification.setTitle(this.title);
         notification.setValue(this.value);
+        notification.setDestination(this.destination);
 
         return notification;
     }

@@ -106,7 +106,12 @@ public class Trip extends BaseEntity {
         this.additionalInfo = additionalInfo;
     }
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "trips_applicants",
+            joinColumns = {@JoinColumn(name = "trip_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}
+    )
     public Set<User> getApplicants() {
         return applicants;
     }

@@ -68,7 +68,7 @@ public class User extends BaseEntity implements UserDetails {
         return true;
     }
 
-    @Column(name = "is_enabled", columnDefinition="TINYINT(1) DEFAULT 1", nullable = false)
+    @Column(name = "is_enabled", columnDefinition = "TINYINT(1) DEFAULT 1", nullable = false)
     @Override
     public boolean isEnabled() {
         return this.isEnabled;
@@ -146,7 +146,12 @@ public class User extends BaseEntity implements UserDetails {
         this.image = profileImage;
     }
 
-    @OneToMany
+    @ManyToMany(cascade = {CascadeType.REMOVE})
+    @JoinTable(
+            name = "users_notifications",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "notification_id", referencedColumnName = "id")}
+    )
     public Set<Notification> getNotifications() {
         return notifications;
     }

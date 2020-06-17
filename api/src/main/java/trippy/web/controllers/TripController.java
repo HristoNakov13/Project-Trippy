@@ -8,22 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import trippy.domain.entities.Car;
-import trippy.domain.entities.City;
-import trippy.domain.entities.Trip;
-import trippy.domain.entities.User;
-import trippy.domain.models.binding.trip.TripApplyBindingModel;
-import trippy.domain.models.binding.trip.TripCreateBindingModel;
-import trippy.domain.models.binding.trip.TripHasAppliedBindingModel;
-import trippy.domain.models.binding.trip.TripSearchBindingModel;
+import trippy.domain.entities.*;
+import trippy.domain.entities.enums.NotificationAction;
+import trippy.domain.models.binding.trip.*;
 import trippy.domain.models.view.cars.CarCreateTripViewModel;
 import trippy.domain.models.view.trips.mytrips.TripMyTripsViewModel;
 import trippy.domain.models.view.trips.search.CitySearchViewModel;
 import trippy.domain.models.view.trips.search.TripSearchViewModel;
 import trippy.domain.models.view.trips.tripdetails.TripDetailsViewModel;
-import trippy.services.CarService;
-import trippy.services.CityService;
-import trippy.services.TripService;
+import trippy.services.*;
 import trippy.util.constants.TripValidationConstants;
 import trippy.util.entities.trips.search.SearchTripParams;
 import trippy.util.entities.trips.search.SearchTripParamsBuilder;
@@ -50,13 +43,17 @@ public class TripController {
     private final CarService carService;
     private final ValidatorUtil validatorUtil;
     private final TripService tripService;
+    private final NotificationService notificationService;
+    private final UserService userService;
 
-    public TripController(CityService cityService, ModelMapper modelMapper, CarService carService, ValidatorUtil validatorUtil, TripService tripService) {
+    public TripController(CityService cityService, ModelMapper modelMapper, CarService carService, ValidatorUtil validatorUtil, TripService tripService, NotificationService notificationService, UserService userService) {
         this.cityService = cityService;
         this.modelMapper = modelMapper;
         this.carService = carService;
         this.validatorUtil = validatorUtil;
         this.tripService = tripService;
+        this.notificationService = notificationService;
+        this.userService = userService;
 
         init();
     }
@@ -175,17 +172,57 @@ public class TripController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        this.tripService.apply(user, tripApplyBindingModel.getId());
+        try {
+            this.tripService.apply(user, tripApplyBindingModel.getId());
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setTitle(e.getMessage());
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/applicant-check")
-    public ResponseEntity<Boolean> hasApplied(Authentication authentication,@RequestBody TripHasAppliedBindingModel tripApplyBindingModel) {
+    public ResponseEntity<Boolean> hasApplied(Authentication authentication, @RequestBody TripHasAppliedBindingModel tripApplyBindingModel) {
         User user = (User) authentication.getPrincipal();
         boolean hasApplied = this.tripService.hasApplied(user, tripApplyBindingModel.getId());
 
         return ResponseEntity.ok(hasApplied);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/approve-applicant")
+    public ResponseEntity<?> approveApplicant(Authentication authentication,
+                                              @RequestBody TripHandleApplicationBindingModel tripHandleApplicationModel) {
+        User user = (User) authentication.getPrincipal();
+
+        if (!this.tripService.isTripCreator(user.getId(), tripHandleApplicationModel.getTripId())) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setTitle("User is not creator of the trip.");
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            //checks whether the notification matches
+            Notification notification = this.notificationService.getNotificationById(tripHandleApplicationModel.getNotificationId());
+            if (!notification.getAction().equals(NotificationAction.TRIP_APPLY)
+                    || !notification.getValue().equals(tripHandleApplicationModel.getApplicantId())
+                    || !notification.getDestination().equals(tripHandleApplicationModel.getTripId())) {
+                throw new IllegalArgumentException("Invalid notification.");
+            }
+
+            this.tripService.approveApplicant(tripHandleApplicationModel.getApplicantId(), tripHandleApplicationModel.getTripId());
+            this.notificationService.deleteNotification(notification);
+        } catch (IllegalArgumentException e) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setTitle(e.getMessage());
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //adds type mappings

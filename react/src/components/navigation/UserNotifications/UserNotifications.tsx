@@ -8,7 +8,8 @@ interface Props {
     notifications: Array<Notification>,
 }
 
-const UserNotifications: React.FC = () => {
+const UserNotifications: React.FC<Props> = ({ notifications }) => {
+    console.log(notifications);
     return <Fragment>
         <NavDropdown alignRight title={<i className="fas fa-bell"></i>} id="account-controll-drpdown">
             <NavDropdown.Header>Notifications</NavDropdown.Header>
