@@ -5,6 +5,7 @@ public class TripHandleApplicationBindingModel {
     private String applicantId;
     private String tripId;
     private Long notificationId;
+    private boolean isApproved;
 
     public TripHandleApplicationBindingModel() {
     }
@@ -31,5 +32,13 @@ public class TripHandleApplicationBindingModel {
 
     public void setNotificationId(Long notificationId) {
         this.notificationId = notificationId;
+    }
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(boolean approved) {
+        isApproved = approved;
     }
 }

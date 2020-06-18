@@ -6,7 +6,7 @@ import MyTripModel from "../components/user/trips/MyTrips/my-trip-interface";
 import TripDetailsModel from "../components/user/trips/TripDetails/trip-details-interface";
 import SearchCity from "../components/user/trips/SearchTrips/search-trip-cities-interface";
 import SearchTrip from "../components/user/trips/SearchTrips/search-trip-interface";
-import TripApplicationHandle from "../components/navigation/UserNotifications/NotificationAction/actions/TripApplyAction/trip-apply-handle-request-interface";
+import TripApplicationReqModel from "../components/navigation/UserNotifications/Notification/actions/TripApplyAction/trip-apply-handle-request-interface";
 
 const API_ROOT = "/api/user/trips";
 
@@ -19,8 +19,7 @@ const END_POINTS = {
     search: API_ROOT + "/search",
     apply: API_ROOT + "/apply",
     hasApplied: API_ROOT + "/applicant-check",
-    approveApplicant: API_ROOT + "/approve-applicant",
-    denyApplicant: API_ROOT + "/deny-applicant",
+    handleApplicantAction: API_ROOT + "/applicant-evaluation",
 };
 
 const tripService = {
@@ -56,12 +55,12 @@ const tripService = {
         return http.post(END_POINTS.hasApplied, { id: tripId });
     },
 
-    approveApplicant: (handleData: TripApplicationHandle): Promise<any> => {
-        return http.post(END_POINTS.approveApplicant, handleData);
+    approveApplicant: (handleData: TripApplicationReqModel): Promise<any> => {
+        return http.post(END_POINTS.handleApplicantAction, handleData);
     },
 
-    denyApplicant: (handleData: TripApplicationHandle): Promise<any> => {
-        return http.post(END_POINTS.denyApplicant, handleData);
+    denyApplicant: (handleData: TripApplicationReqModel): Promise<any> => {
+        return http.post(END_POINTS.handleApplicantAction, handleData);
     },
 };
 

@@ -1,27 +1,32 @@
 import React, { useMemo } from "react";
-import "./NotificationAction.css";
+import "./Notification.css";
 
-import { Button, Row, Col, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
-import Notification from "../notification-interface";
+import NotificationModel from "../notification-interface";
 import hasKey from "../../../../util/has-key";
 import TripApplyAction from "./actions/TripApplyAction/TripApplyAction";
+import TripApplicationResult from "./actions/TripApplicationResult/TripApplicationResult";
 
 interface Props {
-    notification: Notification,
+    notification: NotificationModel,
 }
 
 const actionTitles = {
     TRIP_APPLY: "Trip application",
+    TRIP_APPLICATION_RESULT: "Trip application result"
 }
 
-const NotificationAction: React.FC<Props> = ({ notification }) => {
+const Notification: React.FC<Props> = ({ notification }) => {
     const actions = useMemo(() => ({
         TRIP_APPLY: <TripApplyAction
             value={notification.value}
             destination={notification.destination}
             notificationId={notification.id} />,
-    }), []);
+
+        TRIP_APPLICATION_RESULT: <TripApplicationResult
+            destination={notification.destination} />
+    }), [notification.destination, notification.id, notification.value]);
 
     return <Card className="notification-card">
         <Card.Header as="h5"><span className="text-feature">{hasKey(actionTitles, notification.action) && actionTitles[notification.action]}</span></Card.Header>
@@ -37,4 +42,4 @@ const NotificationAction: React.FC<Props> = ({ notification }) => {
     </Card>
 };
 
-export default NotificationAction;
+export default Notification;

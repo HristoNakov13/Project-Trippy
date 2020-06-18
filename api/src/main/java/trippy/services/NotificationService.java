@@ -1,6 +1,7 @@
 package trippy.services;
 
 import trippy.domain.entities.Notification;
+import trippy.domain.entities.Trip;
 import trippy.domain.entities.User;
 
 public interface NotificationService {
@@ -27,4 +28,22 @@ public interface NotificationService {
      * @param notification {@link Notification} that's to be removed.
      */
     void deleteNotification(Notification notification);
+
+    /**
+     * Creates a {@link Notification} signaling that a {@link User} has
+     * been approved to join a {@link Trip}.
+     *
+     * @param trip {@link Trip} to which the {@link User} has applied.
+     * @return {@link Notification}
+     */
+    Notification createTripApprovedNotification(Trip trip);
+
+    /**
+     * Creates a {@link Notification} signaling that a {@link User} has
+     * been denied from joining a {@link Trip}.
+     *
+     * @param trip {@link Trip} to which the {@link User} has applied.
+     * @return {@link Notification}
+     */
+    Notification createTripDeniedNotification(Trip trip);
 }

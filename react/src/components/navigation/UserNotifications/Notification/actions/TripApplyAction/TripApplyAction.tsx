@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import { Button } from "react-bootstrap";
 import TripApplyActionHandle from "./trip-apply-handle-request-interface";
 import tripService from "../../../../../../services/trip-service";
+import { useHistory } from "react-router-dom";
 
 interface Props {
     value: string,
@@ -11,14 +12,21 @@ interface Props {
 }
 
 const TripApplyAction: React.FC<Props> = ({ value, destination, notificationId }) => {
+    const history = useHistory();
     const approveHandler = () => {
-        tripService.approveApplicant({ applicantId: value, tripId: destination, notificationId } as TripApplyActionHandle)
-            .then(res => console.log(res))
+        tripService.approveApplicant({ applicantId: value, tripId: destination, notificationId, isApproved: true } as TripApplyActionHandle)
+            .then(() => {
+                history.push("/user/notifications");
+            })
             .catch(console.error);
     };
 
     const denyHandler = () => {
-
+        tripService.denyApplicant({ applicantId: value, tripId: destination, notificationId, isApproved: false } as TripApplyActionHandle)
+            .then(() => {
+                history.push("/user/notifications");
+            })
+            .catch(console.error);
     };
 
     return <Fragment>

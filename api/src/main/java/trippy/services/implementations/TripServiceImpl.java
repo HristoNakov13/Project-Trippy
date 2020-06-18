@@ -116,7 +116,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public boolean hasApplied(User user, String tripId) {
+    public boolean hasAppliedForTrip(User user, String tripId) {
         Trip trip = tripRepository.findById(tripId).orElse(null);
 
         return this.hasApplied(user, trip);

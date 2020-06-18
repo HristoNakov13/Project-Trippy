@@ -6,4 +6,6 @@ import trippy.domain.entities.Notification;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
+
+
 }

@@ -1,4 +1,4 @@
-interface Notification {
+interface NotificationModel {
     id: number,
     title: string,
     action: string,
@@ -8,4 +8,4 @@ interface Notification {
     isRead: boolean,
 }
 
-export default Notification;
+export default NotificationModel;

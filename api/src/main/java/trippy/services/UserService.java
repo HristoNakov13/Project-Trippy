@@ -99,4 +99,20 @@ public interface UserService extends UserDetailsService {
      * @param notification {@link Notification} the notification that's to be added.
      */
     void addNotification(User user, Notification notification);
+
+    /**
+     * Adds a {@link Notification} to a {@link User}.
+     *
+     * @param userId {@code String} id of the user to whom the notification is added.
+     * @param notification {@link Notification} the notification that's to be added.
+     */
+    void addNotification(String userId, Notification notification);
+
+    /**
+     * Deletes a {@link Notification} from {@link User}.
+     *
+     * @param user {@link User} from whom the notification is removed.
+     * @param notification {@link Notification} to be removed.
+     */
+    void deleteNotification(User user, Notification notification);
 }

@@ -58,7 +58,7 @@ public interface TripService {
      * @param tripId id of the {@link Trip}
      * @return {@code boolean} result of the check.
      */
-    boolean hasApplied(User user, String tripId);
+    boolean hasAppliedForTrip(User user, String tripId);
 
     /**
      * Approves the applicant to become part of the trip.

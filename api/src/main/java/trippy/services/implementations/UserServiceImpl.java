@@ -179,6 +179,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void addNotification(String userId, Notification notification) {
+        User applicant = this.getUserById(userId);
+
+        this.addNotification(applicant, notification);
+    }
+
+
+    @Override
+    public void deleteNotification(User user, Notification toBeDeleted) {
+        user.getNotifications().removeIf(notification -> notification.getId().equals(toBeDeleted.getId()));
+
+        this.userRepository.saveAndFlush(user);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));

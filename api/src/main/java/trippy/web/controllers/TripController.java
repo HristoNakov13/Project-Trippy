@@ -18,6 +18,7 @@ import trippy.domain.models.view.trips.search.TripSearchViewModel;
 import trippy.domain.models.view.trips.tripdetails.TripDetailsViewModel;
 import trippy.services.*;
 import trippy.util.constants.TripValidationConstants;
+import trippy.util.entities.notifications.NotificationBuilder;
 import trippy.util.entities.trips.search.SearchTripParams;
 import trippy.util.entities.trips.search.SearchTripParamsBuilder;
 import trippy.util.validator.ErrorResponse;
@@ -185,16 +186,16 @@ public class TripController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/applicant-check")
-    public ResponseEntity<Boolean> hasApplied(Authentication authentication, @RequestBody TripHasAppliedBindingModel tripApplyBindingModel) {
+    public ResponseEntity<Boolean> hasAppliedForTrip(Authentication authentication, @RequestBody TripHasAppliedBindingModel tripApplyBindingModel) {
         User user = (User) authentication.getPrincipal();
-        boolean hasApplied = this.tripService.hasApplied(user, tripApplyBindingModel.getId());
+        boolean hasApplied = this.tripService.hasAppliedForTrip(user, tripApplyBindingModel.getId());
 
         return ResponseEntity.ok(hasApplied);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/approve-applicant")
-    public ResponseEntity<?> approveApplicant(Authentication authentication,
-                                              @RequestBody TripHandleApplicationBindingModel tripHandleApplicationModel) {
+    @RequestMapping(method = RequestMethod.POST, path = "/applicant-evaluation")
+    public ResponseEntity<?> applicantEvaluationHandler(Authentication authentication,
+                                                        @RequestBody TripHandleApplicationBindingModel tripHandleApplicationModel) {
         User user = (User) authentication.getPrincipal();
 
         if (!this.tripService.isTripCreator(user.getId(), tripHandleApplicationModel.getTripId())) {
@@ -212,9 +213,22 @@ public class TripController {
                     || !notification.getDestination().equals(tripHandleApplicationModel.getTripId())) {
                 throw new IllegalArgumentException("Invalid notification.");
             }
+            Notification applicationResult;
+            Trip trip = this.tripService.getTripById(tripHandleApplicationModel.getTripId());
 
-            this.tripService.approveApplicant(tripHandleApplicationModel.getApplicantId(), tripHandleApplicationModel.getTripId());
-            this.notificationService.deleteNotification(notification);
+            if (tripHandleApplicationModel.isApproved()) {
+                this.tripService.approveApplicant(tripHandleApplicationModel.getApplicantId(), trip.getId());
+                 applicationResult = this.notificationService
+                        .createTripApprovedNotification(trip);
+            } else {
+                this.tripService.denyApplicant(tripHandleApplicationModel.getApplicantId(), trip.getId());
+                applicationResult = this.notificationService
+                        .createTripDeniedNotification(trip);
+            }
+            //sends notification to applicant of his application result
+            this.userService.addNotification(tripHandleApplicationModel.getApplicantId(), applicationResult);
+            //deletes the handled application from the trip creator
+            this.userService.deleteNotification(user, notification);
         } catch (IllegalArgumentException e) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setTitle(e.getMessage());

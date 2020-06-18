@@ -146,7 +146,7 @@ public class User extends BaseEntity implements UserDetails {
         this.image = profileImage;
     }
 
-    @ManyToMany(cascade = {CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     @JoinTable(
             name = "users_notifications",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
